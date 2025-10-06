@@ -1,17 +1,22 @@
 # GITHUB.md - Wallai Version Control & CI/CD Guide
 
-## Repository Structure
+## Repository Structure (Turborepo Monorepo)
 
-- **Backend Repository:** github.com/PDAC95/wbackend
-- **Web Repository:** github.com/PDAC95/wweb
-- **Mobile Repository:** github.com/PDAC95/wmobile
+- **Monorepo:** github.com/PDAC95/12w
 - **Owner:** PDAC95
 - **Visibility:** Private
+- **Architecture:** Turborepo monorepo with npm workspaces
+- **Workspaces:**
+  - `apps/api` - FastAPI Backend (Python 3.11+)
+  - `apps/wallai-web` - React Web App (Vite + TypeScript)
+  - `apps/mobile` - React Native + Expo (Sprint 4)
+  - `packages/*` - Shared code (types, UI, config)
 - **Tech Stack:**
   - Backend: FastAPI + Python 3.11
   - Web: React 18 + TypeScript + Vite
   - Mobile: React Native + Expo
   - Database: PostgreSQL (Supabase)
+  - Build Tool: Turborepo v2.5.8
 - **Deployment Platforms:**
   - Backend: Railway
   - Web: Vercel
@@ -22,39 +27,42 @@
 
 ## Repository Setup
 
-### Initial Configuration for Each Repository
+### Initial Configuration (Monorepo)
 
 ```bash
-# Backend Repository (wbackend)
-cd C:\dev\wallai\wbackend
-git init
-git remote add origin https://github.com/PDAC95/wbackend.git
-git branch -M main
-echo "# Wallai Backend" >> README.md
-git add .
-git commit -m "chore: initial backend setup"
-git push -u origin main
+# Clone monorepo
+git clone https://github.com/PDAC95/12w.git
+cd 12w
 
-# Web Repository (wweb)
-cd C:\dev\wallai\wweb
-git init
-git remote add origin https://github.com/PDAC95/wweb.git
-git branch -M main
-echo "# Wallai Web" >> README.md
-git add .
-git commit -m "chore: initial web setup"
-git push -u origin main
+# Install root dependencies (Turborepo)
+npm install
 
-# Mobile Repository (wmobile)
-cd C:\dev\wallai\wmobile
-git init
-git remote add origin https://github.com/PDAC95/wmobile.git
-git branch -M main
-echo "# Wallai Mobile" >> README.md
-git add .
-git commit -m "chore: initial mobile setup"
-git push -u origin main
+# Install web app dependencies
+cd apps/wallai-web
+npm install
+cd ../..
+
+# Install Python backend dependencies
+cd apps/api
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cd ../..
+
+# Setup environment variables
+cp .env.example .env
+# Edit .env with your credentials
+
+# Run development servers
+npm run dev  # Runs both web and api
 ```
+
+### Repository Already Configured ✅
+
+- Remote: https://github.com/PDAC95/12w.git
+- Branch: main
+- Turborepo: Configured with npm workspaces
+- Workspaces: apps/api, apps/wallai-web
 
 ### Branch Structure (All Repositories)
 
@@ -74,7 +82,11 @@ main (production)
 
 ## Git Configuration Files
 
-### Backend .gitignore (wbackend)
+### Root .gitignore (Already Configured ✅)
+
+The monorepo has a unified `.gitignore` at the root that covers all workspaces.
+
+### Legacy: Backend .gitignore (for reference only)
 
 ```gitignore
 # Python
@@ -330,7 +342,83 @@ chore(ci): configure GitHub Actions for deployment
 
 ## GitHub Actions Workflows
 
-### Backend CI/CD (.github/workflows/backend-ci.yml)
+### Monorepo CI/CD (.github/workflows/ci.yml)
+
+**Note:** For monorepo, we use a single workflow that tests all apps using Turborepo's caching and task orchestration.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: "18"
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint all apps
+        run: npm run lint
+
+      - name: Build all apps
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Run tests
+        run: npm run test
+
+  deploy-web-production:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./apps/wallai-web
+          vercel-args: "--prod"
+
+  deploy-api-production:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          npm install -g @railway/cli
+          cd apps/api
+          railway up --service wallai-api
+```
+
+### Legacy: Backend CI/CD (.github/workflows/backend-ci.yml - for reference)
 
 ```yaml
 name: Backend CI/CD
