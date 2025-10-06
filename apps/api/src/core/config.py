@@ -1,46 +1,60 @@
-from pydantic_settings import BaseSettings
+"""Core Configuration using Pydantic Settings"""
 from typing import List
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """
-    Configuración global de la aplicación usando Pydantic Settings.
-    Las variables se cargan desde .env
-    """
+    """Application settings loaded from environment variables"""
 
-    # API
-    API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Wallai Financial Management"
-    VERSION: str = "1.0.0"
+    # Application
+    APP_NAME: str = "Wallai API"
+    APP_VERSION: str = "0.1.0"
     ENVIRONMENT: str = "development"
-    DEBUG: bool = True
-
-    # Server
-    HOST: str = "0.0.0.0"
     PORT: int = 8000
-    RELOAD: bool = True
-
-    # Database
-    DATABASE_URL: str = "postgresql://wallai_user:wallai_pass@localhost:5432/wallai_db"
-
-    # Redis
-    REDIS_URL: str = "redis://localhost:6379/0"
 
     # CORS
-    BACKEND_CORS_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:8000",
-    ]
+    CORS_ORIGINS: str = "http://localhost:3000"
 
-    # Security
-    SECRET_KEY: str = "CHANGE_THIS_IN_PRODUCTION_MIN_32_CHARACTERS_LONG"
+    # Supabase
+    SUPABASE_URL: str
+    SUPABASE_ANON_KEY: str
+    SUPABASE_SERVICE_KEY: str
+    DATABASE_URL: str
+
+    # JWT
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    # Rate Limiting
+    RATE_LIMIT_PER_MINUTE: int = 60
+    AI_RATE_LIMIT_PER_DAY: int = 1000
+
+    # Storage & Uploads
+    MAX_FILE_SIZE: int = 10485760  # 10MB
+    ALLOWED_EXTENSIONS: str = "jpg,jpeg,png,pdf"
+
+    # Redis (Optional)
+    REDIS_URL: str = "redis://localhost:6379"
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+        extra="ignore"
+    )
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Convert CORS_ORIGINS string to list"""
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+
+    @property
+    def allowed_extensions_list(self) -> List[str]:
+        """Convert ALLOWED_EXTENSIONS string to list"""
+        return [ext.strip() for ext in self.ALLOWED_EXTENSIONS.split(",")]
 
 
-# Instancia global de settings
+# Global settings instance
 settings = Settings()

@@ -1,73 +1,49 @@
+"""FastAPI Application Entry Point"""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
-
 from .core.config import settings
+from .api.routes import health, database
 
-# Crear instancia de FastAPI
+# Create FastAPI app
 app = FastAPI(
-    title=settings.PROJECT_NAME,
-    version=settings.VERSION,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
+    description="AI-powered financial assistant API",
     docs_url="/docs",
     redoc_url="/redoc",
+    openapi_url="/openapi.json"
 )
 
-# Configurar CORS
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Include routers
+app.include_router(health.router)
+app.include_router(database.router)
+
 
 @app.get("/")
 async def root():
-    """
-    Endpoint raíz - Información básica de la API
-    """
+    """Root endpoint - API information"""
     return {
-        "message": "Wallai API - Financial Management System",
-        "version": settings.VERSION,
-        "environment": settings.ENVIRONMENT,
+        "message": "Welcome to Wallai API",
+        "version": settings.APP_VERSION,
         "docs": "/docs",
-        "health": "/health",
+        "health": "/health"
     }
 
 
-@app.get("/health")
-async def health_check():
-    """
-    Health check endpoint - Verifica que la aplicación está funcionando
-
-    Returns:
-        dict: Estado de salud de la aplicación
-    """
-    return {
-        "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "version": settings.VERSION,
-        "environment": settings.ENVIRONMENT,
-    }
-
-
-# Evento de startup
-@app.on_event("startup")
-async def startup_event():
-    """
-    Tareas a ejecutar al iniciar la aplicación
-    """
-    print(f"🚀 Starting {settings.PROJECT_NAME} v{settings.VERSION}")
-    print(f"📝 Environment: {settings.ENVIRONMENT}")
-    print(f"📚 Docs available at: http://{settings.HOST}:{settings.PORT}/docs")
-
-
-# Evento de shutdown
-@app.on_event("shutdown")
-async def shutdown_event():
-    """
-    Tareas a ejecutar al cerrar la aplicación
-    """
-    print(f"👋 Shutting down {settings.PROJECT_NAME}")
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "src.main:app",
+        host="0.0.0.0",
+        port=settings.PORT,
+        reload=True
+    )

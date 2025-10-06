@@ -1,0 +1,463 @@
+<!--
+=====================================================
+WALLAI EMAIL TEMPLATES
+=====================================================
+Custom email templates for Supabase Authentication
+
+To use these templates:
+1. Go to Supabase Dashboard
+2. Navigate to Authentication → Email Templates
+3. Copy each template into its respective section
+4. Replace placeholder URLs with your actual domain
+
+Brand Colors:
+- Growth Green: #4ADE80
+- Trust Teal: #14B8A6
+- Deep Navy: #2E4057
+
+=====================================================
+-->
+
+<!-- =====================================================
+     TEMPLATE 1: CONFIRM SIGNUP
+     =====================================================
+     Sent when a new user signs up and needs to verify their email
+     Available variables: .ConfirmationURL, .Token, .TokenHash
+     ===================================================== -->
+
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+
+  <!-- Header with Wallai Logo -->
+  <div style="background: linear-gradient(135deg, #4ADE80 0%, #5EEAD4 50%, #14B8A6 100%); padding: 40px 20px; text-align: center;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
+      💰 Wallai
+    </h1>
+    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">
+      Your AI Financial Assistant
+    </p>
+  </div>
+
+  <!-- Main Content -->
+  <div style="padding: 40px 30px; background-color: #ffffff;">
+    <h2 style="color: #2E4057; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+      Welcome to Wallai! 🎉
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+      We're excited to have you on board! You're one step away from taking control of your finances with AI-powered insights.
+    </p>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+      Click the button below to confirm your email address and activate your account:
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align: center; margin: 0 0 30px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display: inline-block; background-color: #4ADE80; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(74, 222, 128, 0.3);">
+        Confirm Your Email
+      </a>
+    </div>
+
+    <!-- Alternative Link -->
+    <p style="color: #6B7280; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+      If the button doesn't work, copy and paste this link into your browser:
+    </p>
+    <p style="color: #14B8A6; font-size: 14px; word-break: break-all; margin: 0 0 30px 0;">
+      {{ .ConfirmationURL }}
+    </p>
+
+    <!-- Features Preview -->
+    <div style="background-color: #F9FAFB; padding: 20px; border-radius: 8px; margin: 0 0 20px 0;">
+      <p style="color: #2E4057; font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">
+        What you'll get with Wallai:
+      </p>
+      <ul style="color: #374151; font-size: 14px; line-height: 1.8; margin: 0; padding-left: 20px;">
+        <li>AI-powered expense categorization</li>
+        <li>Smart budget recommendations</li>
+        <li>Collaborative finance management</li>
+        <li>Real-time financial insights</li>
+      </ul>
+    </div>
+
+    <!-- Security Notice -->
+    <p style="color: #9CA3AF; font-size: 13px; line-height: 1.6; margin: 0; padding-top: 20px; border-top: 1px solid #E5E7EB;">
+      If you didn't create an account with Wallai, you can safely ignore this email.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: #F3F4F6; padding: 30px; text-align: center;">
+    <p style="color: #6B7280; font-size: 13px; margin: 0 0 10px 0;">
+      © 2025 Wallai. All rights reserved.
+    </p>
+    <p style="color: #9CA3AF; font-size: 12px; margin: 0;">
+      You're receiving this email because you signed up for Wallai.
+    </p>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     TEMPLATE 2: MAGIC LINK
+     =====================================================
+     Sent when user requests passwordless login
+     Available variables: .ConfirmationURL, .Token, .TokenHash
+     ===================================================== -->
+
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+
+  <!-- Header -->
+  <div style="background: linear-gradient(135deg, #4ADE80 0%, #5EEAD4 50%, #14B8A6 100%); padding: 40px 20px; text-align: center;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
+      💰 Wallai
+    </h1>
+  </div>
+
+  <!-- Main Content -->
+  <div style="padding: 40px 30px; background-color: #ffffff;">
+    <h2 style="color: #2E4057; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+      Sign in to Wallai
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+      Click the button below to securely sign in to your Wallai account:
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align: center; margin: 0 0 30px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display: inline-block; background-color: #14B8A6; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(20, 184, 166, 0.3);">
+        Sign In to Wallai
+      </a>
+    </div>
+
+    <!-- Alternative Link -->
+    <p style="color: #6B7280; font-size: 14px; line-height: 1.6; margin: 0 0 10px 0;">
+      Or copy this link:
+    </p>
+    <p style="color: #14B8A6; font-size: 14px; word-break: break-all; margin: 0 0 30px 0;">
+      {{ .ConfirmationURL }}
+    </p>
+
+    <!-- Expiration Warning -->
+    <div style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; padding: 16px; border-radius: 4px; margin: 0 0 20px 0;">
+      <p style="color: #92400E; font-size: 14px; margin: 0; font-weight: 500;">
+        ⏰ This link expires in 1 hour
+      </p>
+      <p style="color: #92400E; font-size: 13px; margin: 8px 0 0 0;">
+        For security reasons, please sign in soon.
+      </p>
+    </div>
+
+    <!-- Security Notice -->
+    <p style="color: #9CA3AF; font-size: 13px; line-height: 1.6; margin: 0; padding-top: 20px; border-top: 1px solid #E5E7EB;">
+      If you didn't request this sign-in link, you can safely ignore this email.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: #F3F4F6; padding: 30px; text-align: center;">
+    <p style="color: #6B7280; font-size: 13px; margin: 0 0 10px 0;">
+      © 2025 Wallai. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     TEMPLATE 3: RESET PASSWORD
+     =====================================================
+     Sent when user requests password reset
+     Available variables: .ConfirmationURL, .Token, .TokenHash
+     ===================================================== -->
+
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+
+  <!-- Header -->
+  <div style="background: linear-gradient(135deg, #4ADE80 0%, #5EEAD4 50%, #14B8A6 100%); padding: 40px 20px; text-align: center;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
+      💰 Wallai
+    </h1>
+  </div>
+
+  <!-- Main Content -->
+  <div style="padding: 40px 30px; background-color: #ffffff;">
+    <h2 style="color: #2E4057; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+      Reset Your Password 🔐
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+      We received a request to reset your Wallai password. Click the button below to create a new password:
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align: center; margin: 0 0 30px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display: inline-block; background-color: #4ADE80; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(74, 222, 128, 0.3);">
+        Reset Password
+      </a>
+    </div>
+
+    <!-- Alternative Link -->
+    <p style="color: #6B7280; font-size: 14px; line-height: 1.6; margin: 0 0 10px 0;">
+      If the button doesn't work, copy and paste this link:
+    </p>
+    <p style="color: #14B8A6; font-size: 14px; word-break: break-all; margin: 0 0 30px 0;">
+      {{ .ConfirmationURL }}
+    </p>
+
+    <!-- Security Tips -->
+    <div style="background-color: #EFF6FF; border-left: 4px solid #3B82F6; padding: 16px; border-radius: 4px; margin: 0 0 20px 0;">
+      <p style="color: #1E40AF; font-size: 14px; margin: 0 0 8px 0; font-weight: 600;">
+        💡 Password Security Tips:
+      </p>
+      <ul style="color: #1E40AF; font-size: 13px; margin: 0; padding-left: 20px;">
+        <li>Use at least 8 characters</li>
+        <li>Include uppercase and lowercase letters</li>
+        <li>Add numbers and special characters</li>
+        <li>Avoid using personal information</li>
+      </ul>
+    </div>
+
+    <!-- Warning -->
+    <div style="background-color: #FEE2E2; border-left: 4px solid #EF4444; padding: 16px; border-radius: 4px; margin: 0 0 20px 0;">
+      <p style="color: #991B1B; font-size: 14px; margin: 0; font-weight: 500;">
+        ⚠️ Didn't request this?
+      </p>
+      <p style="color: #991B1B; font-size: 13px; margin: 8px 0 0 0;">
+        If you didn't request a password reset, please ignore this email or contact support if you're concerned about your account security.
+      </p>
+    </div>
+
+    <!-- Security Notice -->
+    <p style="color: #9CA3AF; font-size: 13px; line-height: 1.6; margin: 0; padding-top: 20px; border-top: 1px solid #E5E7EB;">
+      This link expires in 1 hour for your security.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: #F3F4F6; padding: 30px; text-align: center;">
+    <p style="color: #6B7280; font-size: 13px; margin: 0 0 10px 0;">
+      © 2025 Wallai. All rights reserved.
+    </p>
+    <p style="color: #9CA3AF; font-size: 12px; margin: 0;">
+      Need help? Contact us at support@wallai.app
+    </p>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     TEMPLATE 4: CHANGE EMAIL ADDRESS
+     =====================================================
+     Sent when user requests to change their email
+     Available variables: .ConfirmationURL, .Token, .TokenHash, .NewEmail
+     ===================================================== -->
+
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+
+  <!-- Header -->
+  <div style="background: linear-gradient(135deg, #4ADE80 0%, #5EEAD4 50%, #14B8A6 100%); padding: 40px 20px; text-align: center;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
+      💰 Wallai
+    </h1>
+  </div>
+
+  <!-- Main Content -->
+  <div style="padding: 40px 30px; background-color: #ffffff;">
+    <h2 style="color: #2E4057; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+      Confirm Email Change 📧
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+      We received a request to change the email address associated with your Wallai account.
+    </p>
+
+    <!-- New Email Display -->
+    <div style="background-color: #F0FDF4; border: 2px solid #4ADE80; padding: 16px; border-radius: 8px; margin: 0 0 30px 0; text-align: center;">
+      <p style="color: #166534; font-size: 14px; margin: 0 0 8px 0; font-weight: 500;">
+        New Email Address:
+      </p>
+      <p style="color: #15803D; font-size: 18px; margin: 0; font-weight: 600;">
+        {{ .Email }}
+      </p>
+    </div>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+      Click the button below to confirm this change:
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align: center; margin: 0 0 30px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display: inline-block; background-color: #14B8A6; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(20, 184, 166, 0.3);">
+        Confirm Email Change
+      </a>
+    </div>
+
+    <!-- Alternative Link -->
+    <p style="color: #6B7280; font-size: 14px; line-height: 1.6; margin: 0 0 10px 0;">
+      Or copy this link:
+    </p>
+    <p style="color: #14B8A6; font-size: 14px; word-break: break-all; margin: 0 0 30px 0;">
+      {{ .ConfirmationURL }}
+    </p>
+
+    <!-- Important Note -->
+    <div style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; padding: 16px; border-radius: 4px; margin: 0 0 20px 0;">
+      <p style="color: #92400E; font-size: 14px; margin: 0; font-weight: 500;">
+        ⚠️ Important
+      </p>
+      <p style="color: #92400E; font-size: 13px; margin: 8px 0 0 0;">
+        After confirmation, all future communications will be sent to your new email address.
+      </p>
+    </div>
+
+    <!-- Warning -->
+    <div style="background-color: #FEE2E2; border-left: 4px solid #EF4444; padding: 16px; border-radius: 4px; margin: 0 0 20px 0;">
+      <p style="color: #991B1B; font-size: 14px; margin: 0; font-weight: 500;">
+        🚨 Didn't request this change?
+      </p>
+      <p style="color: #991B1B; font-size: 13px; margin: 8px 0 0 0;">
+        If you didn't request this email change, please contact our support team immediately at <a href="mailto:support@wallai.app" style="color: #991B1B; font-weight: 600;">support@wallai.app</a>
+      </p>
+    </div>
+
+    <!-- Security Notice -->
+    <p style="color: #9CA3AF; font-size: 13px; line-height: 1.6; margin: 0; padding-top: 20px; border-top: 1px solid #E5E7EB;">
+      This confirmation link expires in 24 hours.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: #F3F4F6; padding: 30px; text-align: center;">
+    <p style="color: #6B7280; font-size: 13px; margin: 0 0 10px 0;">
+      © 2025 Wallai. All rights reserved.
+    </p>
+    <p style="color: #9CA3AF; font-size: 12px; margin: 0;">
+      Need help? Contact us at support@wallai.app
+    </p>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     TEMPLATE 5: INVITE USER (Optional - Custom)
+     =====================================================
+     Sent when a user invites someone to join their space
+     Custom template (not part of default Supabase auth)
+     ===================================================== -->
+
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+
+  <!-- Header -->
+  <div style="background: linear-gradient(135deg, #4ADE80 0%, #5EEAD4 50%, #14B8A6 100%); padding: 40px 20px; text-align: center;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
+      💰 Wallai
+    </h1>
+    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">
+      Collaborative Finance Management
+    </p>
+  </div>
+
+  <!-- Main Content -->
+  <div style="padding: 40px 30px; background-color: #ffffff;">
+    <h2 style="color: #2E4057; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+      You've been invited! 🎊
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+      <strong>{{ .InviterName }}</strong> has invited you to collaborate on their finances in Wallai.
+    </p>
+
+    <!-- Space Info -->
+    <div style="background-color: #F0FDF4; border: 2px solid #4ADE80; padding: 20px; border-radius: 8px; margin: 0 0 30px 0;">
+      <p style="color: #166534; font-size: 14px; margin: 0 0 8px 0; font-weight: 500;">
+        Space Name:
+      </p>
+      <p style="color: #15803D; font-size: 20px; margin: 0 0 16px 0; font-weight: 600;">
+        {{ .SpaceName }}
+      </p>
+      <p style="color: #166534; font-size: 14px; margin: 0 0 8px 0; font-weight: 500;">
+        Invitation Code:
+      </p>
+      <p style="color: #15803D; font-size: 24px; margin: 0; font-weight: 700; letter-spacing: 4px; font-family: 'Courier New', monospace;">
+        {{ .InviteCode }}
+      </p>
+    </div>
+
+    <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+      Click the button below to accept the invitation and start managing your finances together:
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align: center; margin: 0 0 30px 0;">
+      <a href="{{ .AcceptURL }}"
+         style="display: inline-block; background-color: #4ADE80; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px rgba(74, 222, 128, 0.3);">
+        Accept Invitation
+      </a>
+    </div>
+
+    <!-- Features -->
+    <div style="background-color: #F9FAFB; padding: 20px; border-radius: 8px; margin: 0 0 20px 0;">
+      <p style="color: #2E4057; font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">
+        What you can do together:
+      </p>
+      <ul style="color: #374151; font-size: 14px; line-height: 1.8; margin: 0; padding-left: 20px;">
+        <li>Track shared expenses in real-time</li>
+        <li>Create and manage budgets collaboratively</li>
+        <li>Split expenses fairly</li>
+        <li>Get AI-powered insights on spending</li>
+      </ul>
+    </div>
+
+    <!-- Security Notice -->
+    <p style="color: #9CA3AF; font-size: 13px; line-height: 1.6; margin: 0; padding-top: 20px; border-top: 1px solid #E5E7EB;">
+      If you don't know {{ .InviterName }}, you can safely ignore this email.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: #F3F4F6; padding: 30px; text-align: center;">
+    <p style="color: #6B7280; font-size: 13px; margin: 0 0 10px 0;">
+      © 2025 Wallai. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     IMPLEMENTATION NOTES
+     =====================================================
+
+     1. Copy each template into Supabase Dashboard:
+        - Go to Authentication → Email Templates
+        - Select template type
+        - Paste HTML
+        - Save
+
+     2. Test templates:
+        - Use test email addresses
+        - Check rendering in different email clients
+        - Verify links work correctly
+
+     3. Customize:
+        - Replace support@wallai.app with your actual support email
+        - Update links with your production domain
+        - Add your actual logo URL if you have one
+
+     4. Variables available in Supabase templates:
+        - {{ .ConfirmationURL }} - Main action URL
+        - {{ .Token }} - Raw token
+        - {{ .TokenHash }} - Hashed token
+        - {{ .Email }} - User's email (change email template)
+
+     5. Best practices:
+        - Keep subject lines under 50 characters
+        - Test on mobile devices
+        - Ensure links are clearly visible
+        - Include alternative text links
+        - Add unsubscribe link for marketing emails
+
+     ===================================================== -->
