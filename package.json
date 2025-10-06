@@ -1,0 +1,31 @@
+{
+  "name": "wallai-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wallai - AI-powered personal finance management platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "web:dev": "turbo run dev --filter=wallai-web",
+    "api:dev": "turbo run dev --filter=wallai-api",
+    "web:build": "turbo run build --filter=wallai-web",
+    "api:build": "turbo run build --filter=wallai-api"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "packageManager": "npm@10.2.4"
+}
