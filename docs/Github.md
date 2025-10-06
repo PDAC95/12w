@@ -1,27 +1,205 @@
 # GITHUB.md - Wallai Version Control & CI/CD Guide
 
-## Repository Structure (Turborepo Monorepo)
+## 🎯 Current Status: Turborepo Monorepo Architecture
 
-- **Monorepo:** github.com/PDAC95/12w
-- **Owner:** PDAC95
-- **Visibility:** Private
-- **Architecture:** Turborepo monorepo with npm workspaces
-- **Workspaces:**
-  - `apps/api` - FastAPI Backend (Python 3.11+)
-  - `apps/wallai-web` - React Web App (Vite + TypeScript)
-  - `apps/mobile` - React Native + Expo (Sprint 4)
-  - `packages/*` - Shared code (types, UI, config)
-- **Tech Stack:**
-  - Backend: FastAPI + Python 3.11
-  - Web: React 18 + TypeScript + Vite
-  - Mobile: React Native + Expo
-  - Database: PostgreSQL (Supabase)
-  - Build Tool: Turborepo v2.5.8
-- **Deployment Platforms:**
-  - Backend: Railway
-  - Web: Vercel
-  - Mobile: EAS (Expo Application Services)
-- **Team Size:** Small team (2-5 developers)
+> **Configured:** 2025-10-06
+> **Repository:** https://github.com/PDAC95/12w
+> **Branch:** main
+> **Architecture:** Turborepo v2.5.8 + npm workspaces
+
+---
+
+## 📦 Repository Structure (Turborepo Monorepo)
+
+### Quick Info
+
+| Property | Value |
+|----------|-------|
+| **Repository** | https://github.com/PDAC95/12w |
+| **Owner** | PDAC95 |
+| **Visibility** | Private |
+| **Architecture** | Turborepo monorepo with npm workspaces |
+| **Build Tool** | Turborepo v2.5.8 |
+| **Team Size** | Small team (2-5 developers) |
+
+### Monorepo Structure
+
+```
+12w/                              ← Root monorepo
+├── apps/                         ← Applications
+│   ├── api/                      ← FastAPI Backend (Python 3.11+)
+│   │   ├── src/
+│   │   ├── tests/
+│   │   ├── requirements.txt
+│   │   ├── package.json         ← npm wrapper for Turborepo
+│   │   └── venv/
+│   └── wallai-web/              ← React Web App (Vite + TypeScript)
+│       ├── src/
+│       ├── public/
+│       ├── package.json
+│       └── node_modules/
+├── packages/                     ← Shared packages (future)
+│   ├── ui/                      ← Shared UI components
+│   ├── types/                   ← Shared TypeScript types
+│   ├── config/                  ← Shared configs (ESLint, TS, etc.)
+│   └── utils/                   ← Shared utilities
+├── database/                     ← Database migrations & schemas
+│   ├── migrations/              ← SQL migration files
+│   └── security/                ← RLS policies
+├── docs/                         ← Project documentation
+│   ├── PRD.md
+│   ├── Planning.md
+│   ├── Tasks.md
+│   ├── Progress.md
+│   ├── Github.md               ← This file
+│   └── ...
+├── templates/                    ← Email & other templates
+├── .gitignore                   ← Unified ignore rules
+├── package.json                 ← Root workspace configuration
+├── turbo.json                   ← Turborepo pipeline config
+├── README.md                    ← Monorepo documentation
+└── .env                         ← Environment variables
+```
+
+### Workspaces Configuration
+
+The monorepo uses **npm workspaces** with Turborepo for task orchestration:
+
+**Root `package.json`:**
+```json
+{
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
+```
+
+**Current Workspaces:**
+1. `wallai-web` - React frontend (apps/wallai-web)
+2. `wallai-api` - FastAPI backend (apps/api)
+
+**Future Workspaces:**
+- `packages/ui` - Shared UI components
+- `packages/types` - Shared TypeScript types
+- `packages/config` - Shared configuration
+- `apps/mobile` - React Native app (Sprint 4)
+
+### Tech Stack
+
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| **Frontend** | React + TypeScript | 18.x |
+| **Build Tool** | Vite | 7.x |
+| **Backend** | FastAPI | 0.100+ |
+| **Language** | Python | 3.11+ |
+| **Database** | PostgreSQL (Supabase) | 15+ |
+| **Monorepo** | Turborepo | 2.5.8 |
+| **Package Manager** | npm | 10.2.4 |
+| **Mobile** | React Native + Expo | (Sprint 4) |
+
+### Deployment Platforms
+
+| App | Platform | URL |
+|-----|----------|-----|
+| **Web** | Vercel | TBD |
+| **Backend** | Railway | TBD |
+| **Mobile** | EAS (Expo) | Sprint 4 |
+| **Database** | Supabase | Configured |
+
+---
+
+## ⚡ Available Commands
+
+### Root Level (Turborepo)
+
+All these commands run from the **root directory** (`C:\dev\12w`):
+
+```bash
+# Development
+npm run dev          # 🚀 Run all apps (web + api) in dev mode
+npm run web:dev      # 🌐 Run web app only (port 3000)
+npm run api:dev      # 🔧 Run API only (port 8000)
+
+# Build & Production
+npm run build        # 📦 Build all apps for production
+npm run web:build    # 📦 Build web app only
+npm run api:build    # ✅ Validate Python backend
+
+# Testing & Quality
+npm run test         # ✅ Run tests across all apps
+npm run lint         # 🔍 Lint all apps
+npm run format       # 💅 Format code with Prettier
+
+# Utilities
+npm run clean        # 🧹 Clean all node_modules and build artifacts
+```
+
+### How Turborepo Works
+
+When you run `npm run dev`, Turborepo:
+
+1. **Reads** `turbo.json` pipeline configuration
+2. **Detects** which apps need to run
+3. **Executes** tasks in parallel (when possible)
+4. **Caches** results for faster subsequent runs
+5. **Streams** output from all apps to your terminal
+
+Example output:
+```bash
+$ npm run dev
+
+• Packages in scope: wallai-api, wallai-web
+• Running dev in 2 packages
+• Remote caching disabled
+
+wallai-web:dev: > vite
+wallai-api:dev: > uvicorn src.main:app --reload
+
+wallai-web:dev:   VITE v7.1.7  ready in 324 ms
+wallai-web:dev:   ➜  Local:   http://localhost:3000/
+wallai-api:dev:   INFO:     Uvicorn running on http://0.0.0.0:8000
+```
+
+---
+
+## 🚀 Why Monorepo? (vs Multi-repo)
+
+### ✅ Benefits of Monorepo for Wallai
+
+| Benefit | Description |
+|---------|-------------|
+| **Code Sharing** | Share types, utils, and components between apps |
+| **Unified Versioning** | All apps use same React, TypeScript versions |
+| **Atomic Changes** | Update frontend + backend in single commit |
+| **Simplified CI/CD** | One pipeline tests/deploys everything |
+| **Developer Experience** | Clone once, run everything |
+| **Turborepo Caching** | Builds are cached, subsequent runs are instant |
+| **Parallel Execution** | Tasks run concurrently (faster builds) |
+| **Single Source of Truth** | One repo to manage, not 3 |
+
+### ❌ Multi-repo Drawbacks (Why We Avoided It)
+
+- **3 repos to clone** (wbackend, wweb, wmobile)
+- **3 CI/CD pipelines** to maintain
+- **Version drift** (React 18.1 in web, 18.0 in mobile)
+- **Code duplication** (types defined in 3 places)
+- **Sync overhead** (coordinate releases across repos)
+- **Complex onboarding** (new devs clone 3 repos)
+
+### 📊 Decision Matrix
+
+| Criteria | Monorepo | Multi-repo | Winner |
+|----------|----------|------------|---------|
+| Code sharing | ✅ Easy | ❌ Difficult | Monorepo |
+| Setup time | ✅ 5 min | ❌ 15 min | Monorepo |
+| CI/CD complexity | ✅ Simple | ❌ Complex | Monorepo |
+| Build speed | ✅ Fast (cache) | ⚠️ Slower | Monorepo |
+| Team size | ✅ Small (2-5) | ✅ Large (20+) | Monorepo |
+| Independent releases | ❌ Harder | ✅ Easy | Multi-repo |
+| Our choice | ✅ Selected | ❌ Not used | **Monorepo** |
+
+**Conclusion:** Monorepo is the right choice for Wallai (small team, shared code, rapid iteration).
 
 ---
 
@@ -1068,7 +1246,21 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Last Updated:** 2025-10-03
-**Version:** 1.0.0
+## 📌 Document Information
+
+**Last Updated:** 2025-10-06
+**Version:** 2.0.0 (Monorepo Edition)
+**Architecture:** Turborepo Monorepo
+**Repository:** https://github.com/PDAC95/12w
+**Branch:** main
 **Maintained by:** Wallai Development Team
+
+### Changelog
+
+- **v2.0.0 (2025-10-06):** Migrated to Turborepo monorepo architecture
+- **v1.0.0 (2025-10-03):** Initial multi-repo documentation (deprecated)
+
+---
+
+**For questions about monorepo setup, see the top of this document.**
 ```
