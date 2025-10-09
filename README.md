@@ -81,6 +81,150 @@ npm run web:dev   # Frontend only (port 3000)
 npm run api:dev   # Backend only (port 8000)
 ```
 
+## 🎬 Starting the Application Step-by-Step
+
+### Option 1: Run Everything at Once (Recommended)
+
+```bash
+# From the root directory
+npm run dev
+```
+
+This will start both frontend (port 3000) and backend (port 8000) simultaneously using Turborepo.
+
+### Option 2: Run Frontend and Backend Separately
+
+#### Starting the Frontend (React + Vite)
+
+1. **Open a terminal** and navigate to the web app directory:
+   ```bash
+   cd apps/wallai-web
+   ```
+
+2. **Install dependencies** (if not done already):
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the app**:
+   - Open your browser at: `http://localhost:3000`
+   - Hot reload is enabled - changes reflect automatically
+
+5. **Available pages**:
+   - `/` - Landing page
+   - `/register` - User registration
+   - `/login` - User login
+   - `/dashboard` - Dashboard (requires authentication)
+
+#### Starting the Backend (FastAPI)
+
+1. **Open a NEW terminal** and navigate to the API directory:
+   ```bash
+   cd apps/api
+   ```
+
+2. **Activate the Python virtual environment**:
+
+   **Windows:**
+   ```bash
+   venv\Scripts\activate
+   ```
+
+   **Linux/Mac:**
+   ```bash
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies** (if not done already):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Verify environment variables**:
+   - Check that `.env` file exists in `apps/api/` directory
+   - Or copy from root: `cp ../../.env .env`
+
+5. **Start the FastAPI server**:
+   ```bash
+   uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+6. **Access the API**:
+   - API Root: `http://localhost:8000`
+   - Swagger Docs: `http://localhost:8000/docs`
+   - ReDoc: `http://localhost:8000/redoc`
+   - Health Check: `http://localhost:8000/health`
+
+### Option 3: Using Turborepo Commands from Root
+
+```bash
+# Frontend only
+npm run web:dev
+
+# Backend only
+npm run api:dev
+
+# Both at the same time
+npm run dev
+```
+
+### Troubleshooting Startup Issues
+
+#### Port Already in Use
+
+**Frontend (3000):**
+```bash
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:3000 | xargs kill -9
+```
+
+**Backend (8000):**
+```bash
+# Windows
+netstat -ano | findstr :8000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:8000 | xargs kill -9
+```
+
+#### Environment Variables Not Loaded
+
+```bash
+# Make sure .env exists in root and apps/api/
+ls -la .env
+ls -la apps/api/.env
+
+# Copy if missing
+cp .env apps/api/.env
+```
+
+#### Python Virtual Environment Issues
+
+```bash
+# Delete and recreate venv
+cd apps/api
+rm -rf venv  # or rmdir /s venv on Windows
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+```
+
+#### Supabase Connection Errors
+
+1. Check `.env` has correct Supabase credentials
+2. Verify Supabase project is running
+3. Test connection at: `http://localhost:8000/health`
+
 ## 📦 Available Scripts
 
 ### Root Level (Turborepo)

@@ -10,37 +10,236 @@
 
 # WALLAI SPRINT 1 - PRODUCT BACKLOG
 
-**Sprint Duration:** 2025-10-03 to 2025-10-17 (14 días)
-**Sprint Goal:** Fundación completa con autenticación, espacios colaborativos y gestión básica de presupuestos
-**Total Story Points:** 89
-**Completed:** 18/89 points (20%)
-**Status:** 🟢 On Track
+**Sprint Duration:** 2025-10-03 to 2025-10-09 (7 días - MVP Onboarding)
+**Sprint Goal:** Fundación completa con autenticación y onboarding de 3 pantallas
+**Total Story Points MVP:** 40 points (34 completados + 6 pendientes)
+**Completed:** 34/40 points (85%)
+**Status:** 🟢 Ahead of Schedule - Day 4 of 7
+**Latest:** ✅ Onboarding completo (US-008.1 a US-008.5) - 11 story points
+
+---
+
+## 📊 DAY 4 SUMMARY (2025-10-09)
+
+**Time Invested:** 3.5 hours (Session 8)
+**Completed:** US-008.1 through US-008.5 Complete
+**Story Points:** +11 points (Total: 34/40 = 85%)
+
+### ✅ Major Accomplishments
+
+1. **Onboarding Flow Complete (Session 8 - 3.5h):**
+   - ✅ US-008.1: Welcome page with brand messaging and hero section
+   - ✅ US-008.2: Space setup with currency selection (USD/CAD/EUR/MXN)
+   - ✅ US-008.3: Budget express with 50/30/20 framework (7 categories auto-generated)
+   - ✅ US-008.4: Onboarding status checking and redirects
+   - ✅ US-008.5: Database migrations (3 new columns + index)
+   - ✅ OnboardingContext for state management across flow
+   - ✅ Complete backend service with all endpoints
+   - ✅ End-to-end testing successful
+
+2. **Database & Cleanup Tools:**
+   - ✅ Migration 004_onboarding_columns.sql executed
+   - ✅ Rollback script created
+   - ✅ README_ONBOARDING.md (350+ lines)
+   - ✅ Cleanup utilities for development
+
+### 🐛 Bugs Squashed
+
+1. **[HIGH]** Duplicate space error during onboarding - Fixed with cleanup scripts and Supabase MCP
+
+### 📁 Files Created Today (10+)
+
+**Frontend:**
+1. `wallai-web/src/features/onboarding/pages/WelcomePage.tsx`
+2. `wallai-web/src/features/onboarding/pages/SpaceSetupPage.tsx`
+3. `wallai-web/src/features/onboarding/pages/BudgetExpressPage.tsx`
+4. `wallai-web/src/context/OnboardingContext.tsx`
+5. `wallai-web/src/services/onboarding.service.ts`
+6. `wallai-web/src/types/Onboarding.types.ts`
+7. `wallai-web/src/features/onboarding/index.ts`
+
+**Backend:**
+8. `apps/api/src/api/routes/onboarding.py`
+9. `apps/api/src/services/onboarding_service.py`
+10. `apps/api/src/schemas/onboarding.py`
+11. `apps/api/cleanup_user.py`
+
+**Database:**
+12. `database/migrations/004_onboarding_columns.sql`
+13. `database/migrations/ROLLBACK_004_onboarding_columns.sql`
+14. `database/migrations/README_ONBOARDING.md`
+15. `database/migrations/CLEANUP_USER_ONBOARDING.sql`
+
+### 📝 Files Modified
+
+1. `wallai-web/src/App.tsx` - Added onboarding routes
+2. `wallai-web/src/components/routes/PrivateRoute.tsx` - Added onboarding guard
+3. `wallai-web/src/features/auth/components/LoginForm.tsx` - Onboarding status check
+
+### 🎉 Milestone Reached
+
+**🚀 ONBOARDING COMPLETE - ÉPICA 2 FINISHED!**
+
+- ✅ Welcome screen with 3-step introduction
+- ✅ Personal space creation with currency selection
+- ✅ Budget express with 50/30/20 framework
+- ✅ Automatic budget item generation (7 categories)
+- ✅ Onboarding status checking and guards
+- ✅ Database migrations complete
+- ✅ End-to-end flow tested successfully
+- ✅ User successfully onboarded: space "prueb" with $5,000 CAD budget
+
+**Next Phase:** Core Features (Budget CRUD → Expense Tracking)
+
+---
+
+## 📊 DAY 3 SUMMARY (2025-10-07)
+
+**Time Invested:** 2.5 hours (Session 6: 2h + Session 7: 0.5h)
+**Completed:** US-006 Enhanced + US-007 Complete
+**Story Points:** +2 points (Total: 23/89 = 26%)
+
+### ✅ Major Accomplishments
+
+1. **Authentication Enhancements (Session 6 - 2h):**
+   - ✅ Forgot Password page with Supabase email reset
+   - ✅ Google OAuth fully functional (tested and working)
+   - ✅ Apple OAuth button ready (Coming Soon badge)
+   - ✅ Social Login Buttons component (reusable)
+   - ✅ OAuth callback handler with proper session management
+   - ✅ Database trigger fix for OAuth users (auto-generate username from email/name)
+   - ✅ Remember Me integration with extended sessions
+   - ✅ Fixed 3 critical bugs (OAuth trigger, session callback, display name)
+
+2. **Protected Routes System (Session 7 - 30min):**
+   - ✅ PrivateRoute component with loading state
+   - ✅ useAuth custom hook for easy auth access
+   - ✅ Protected /dashboard route
+   - ✅ Intended URL redirect after login
+   - ✅ Clean navigation with replace strategy
+
+### 🐛 Bugs Squashed
+
+1. **[CRITICAL]** OAuth database error - trigger required username
+2. **[HIGH]** OAuth callback not establishing session
+3. **[MEDIUM]** Google OAuth showing project name instead of "Wallai"
+
+### 📁 Files Created Today (8)
+
+1. `wallai-web/src/features/auth/pages/ForgotPasswordPage.tsx`
+2. `wallai-web/src/features/auth/components/SocialLoginButtons.tsx`
+3. `wallai-web/src/pages/AuthCallback.tsx`
+4. `wallai-web/src/pages/index.ts`
+5. `database/migrations/FIX_OAUTH_TRIGGER.sql`
+6. `wallai-web/src/components/routes/PrivateRoute.tsx`
+7. `wallai-web/src/hooks/useAuth.ts`
+8. `wallai-web/src/components/routes/index.ts`
+
+### 🎉 Milestone Reached
+
+**🚀 FOUNDATION COMPLETE - All P0 Tasks Finished!**
+
+- ✅ Supabase setup & documentation
+- ✅ Frontend scaffolding (React 18 + Vite + TypeScript)
+- ✅ Backend scaffolding (FastAPI + SQLAlchemy)
+- ✅ Database schema with RLS policies
+- ✅ User registration with modern UX/UI
+- ✅ User login with OAuth (Google working)
+- ✅ Forgot password functionality
+- ✅ Protected routes system
+- ✅ Session management with Remember Me
+
+**Next Phase:** P1 Features (Spaces → Budgets → Expenses)
+
+---
+
+## 🎯 QUICK START (For Next Session)
+
+**What to do next:**
+
+1. Start US-008.1: Pantalla de Bienvenida (1 point, P0)
+2. Create US-008.2: Configuración de Espacio Personal (3 points, P0)
+3. Create US-008.3: Presupuesto Express (3 points, P0)
+4. Implement US-008.4: Estado de Onboarding (2 points, P0)
+5. Execute US-008.5: Migraciones DB (2 points, P0)
+
+**Current State:**
+
+- ✅ Authentication system 100% complete (Register + Login + OAuth)
+- ✅ Session persistence working
+- ✅ Protected routes implemented
+- ✅ Dashboard placeholder ready
+- 🎯 Ready to build Onboarding flow de 3 pantallas
+
+**Dev Server Status:**
+
+- Frontend: http://localhost:3001 (running)
+- Backend: http://localhost:8000 (ready)
+
+---
 
 ## 📌 CONFIGURACIÓN ACTUAL
 
 **Puertos Definidos:**
-- Frontend (React + Vite): `http://localhost:3000`
+
+- Frontend (React + Vite): `http://localhost:3001` ⚠️ Changed from 3000
 - Backend (FastAPI): `http://localhost:8000`
 
 **Environment Setup:** ✅ Completo
+
 - `.env` configurado con todas las variables
 - Supabase conectado: `xmokupfqyjghgigapif.supabase.co`
 - SECRET_KEY generado para JWT
 - CORS configurado para localhost:3000
 - Credenciales de desarrollo: dev@jappi.ca / Password123
 
-**Ready for Development:** ✅ Sí
+**Architecture:** ✅ Turborepo Monorepo
+
+- Repository: https://github.com/PDAC95/12w
+- Branch: main
+- Turborepo: v2.5.8
+- Package manager: npm workspaces
+
+**Completed User Stories:** ✅ 12/100+
+
 - US-001 completada (Supabase setup documentation)
 - US-002 completada (Frontend React scaffolding)
 - US-003 completada (Backend FastAPI setup)
 - US-004 completada (Database schema & models)
-- US-005 completada (User registration system)
-- Documentación completa (18+ archivos)
-- Variables de entorno listas
-- wallai-web funcionando en localhost:3000
-- Backend API corriendo en localhost:8000
-- Sistema de registro completo (awaiting Supabase setup)
-- Siguiente: US-006 (User login)
+- US-005 completada (User registration with modern UX/UI)
+- US-006 completada (User login + OAuth + Forgot Password) ✅ ENHANCED [2025-10-07]
+- US-007 completada (Protected Routes with PrivateRoute component) ✅ [2025-10-07]
+- US-008.1 completada (Welcome page) ✅ [2025-10-09]
+- US-008.2 completada (Space setup) ✅ [2025-10-09]
+- US-008.3 completada (Budget express) ✅ [2025-10-09]
+- US-008.4 completada (Onboarding status) ✅ [2025-10-09]
+- US-008.5 completada (Database migrations) ✅ [2025-10-09]
+
+**Ready for Next Step:** ✅ US-008 (Crear Espacio)
+
+- ✅ Documentación completa (18+ archivos)
+- ✅ Variables de entorno listas
+- ✅ wallai-web funcionando en localhost:3001
+- ✅ Backend API corriendo en localhost:8000
+- ✅ Authentication system complete
+- ✅ Zustand store configured
+- ✅ Dashboard placeholder created
+- 🎯 Next: Implement PrivateRoute component
+
+---
+
+## 📋 ÉPICAS DEL PROYECTO
+
+### Sprint 1 - MVP Actual
+- **ÉPICA 1:** CONFIGURACIÓN INICIAL DEL PROYECTO ✅
+- **ÉPICA 2:** ONBOARDING Y SETUP INICIAL ✅
+- **ÉPICA 3:** NAVEGACIÓN Y UI BASE ⏳
+
+### Sprint 2+ - Futuro
+- **ÉPICA 4:** ESPACIOS COLABORATIVOS 🔮
+- **ÉPICA 5:** GESTIÓN DE PRESUPUESTOS 🔮
+- **ÉPICA 6:** TRACKING DE GASTOS 🔮
+- **ÉPICA 7:** PWA Y MEJORAS UX 🔮
 
 ---
 
@@ -79,6 +278,7 @@
 **Status:** ✅ Completed [2025-10-06]
 
 **Deliverables:**
+
 - `.env.example` - Template completo con todas las variables de entorno
 - `docs/SUPABASE_SETUP.md` - Guía completa de configuración paso a paso
 - `database/security/rls_policies.sql` - Todas las políticas de seguridad RLS
@@ -127,6 +327,7 @@
 **Status:** ✅ Completed [2025-10-06]
 
 **Deliverables:**
+
 - `wallai-web/` - Proyecto Vite + React 18 + TypeScript configurado
 - `wallai-web/src/` - Estructura de carpetas según arquitectura (features, components, lib, stores, hooks, types)
 - `wallai-web/vite.config.ts` - Configuración con path aliases y puerto 3000
@@ -167,6 +368,7 @@
 **Status:** ✅ Completed [2025-10-06]
 
 **Deliverables:**
+
 - `apps/api/src/main.py` - FastAPI application with CORS configured
 - `apps/api/src/core/config.py` - Pydantic settings with all environment variables
 - `apps/api/src/core/database.py` - SQLAlchemy 2.0 configuration with psycopg3
@@ -215,6 +417,7 @@
 **Dependencias:** US-001
 
 **Deliverables:**
+
 - `database/migrations/001_initial_schema.sql` - Complete database schema (9 tables)
 - `database/security/rls_policies.sql` - Row Level Security policies
 - `database/docs/ER_DIAGRAM.md` - Complete Entity-Relationship diagram
@@ -224,6 +427,7 @@
 - FastAPI code ready to connect (awaiting Supabase project setup)
 
 **Next Steps for User:**
+
 1. Follow `docs/SUPABASE_SETUP.md` to create Supabase project
 2. Run `database/migrations/001_initial_schema.sql` in Supabase SQL Editor
 3. Run `database/security/rls_policies.sql` to enable RLS
@@ -261,7 +465,7 @@
 - [x] Código de registro implementado
 - [x] Validaciones Zod configuradas
 - [x] Trigger SQL para perfil automático creado
-- [ ] Pendiente: Usuario debe ejecutar trigger SQL en Supabase
+- [x] Pendiente: Usuario debe ejecutar trigger SQL en Supabase
 
 **Story Points:** 5
 **Prioridad:** P0
@@ -272,6 +476,7 @@
 **UX/UI Improvements:** ✅ Design modernization completed [2025-10-06]
 
 **Deliverables:**
+
 - `wallai-web/src/types/auth.types.ts` - TypeScript types para autenticación
 - `wallai-web/src/lib/validations/auth.validation.ts` - Esquemas Zod (password, username, email)
 - `wallai-web/src/lib/supabase.ts` - Cliente Supabase configurado
@@ -282,6 +487,7 @@
 - `database/README_SETUP_ORDER.md` - Guía de ejecución de migraciones
 
 **Características Implementadas:**
+
 - ✅ Validación de email (formato válido)
 - ✅ Validación de password (min 8 chars, 1 mayúscula, 1 número)
 - ✅ Validación de username (3-30 chars, solo alfanumérico)
@@ -293,6 +499,7 @@
 - ✅ Metadata de usuario (username, full_name) enviada a Supabase
 
 **UX/UI Design Improvements [2025-10-06]:**
+
 - ✅ Split-screen layout (hero section + form)
 - ✅ Real logo integration from `public/logo/` (horizontal & vertical variants)
 - ✅ Professional Heroicons icons (SparklesIcon, UsersIcon, ChartBarIcon, LightBulbIcon)
@@ -310,6 +517,7 @@
 - ✅ Brand colors maintained (#4ADE80, #14B8A6, #2E4057)
 
 **Next Steps for User:**
+
 1. Seguir `docs/SUPABASE_SETUP.md` para crear proyecto Supabase
 2. Ejecutar `database/migrations/001_initial_schema.sql`
 3. Ejecutar `database/migrations/002_auth_triggers.sql`
@@ -331,23 +539,75 @@
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: crear LoginForm con remember me
-- [ ] Frontend: implementar AuthContext con Zustand
-- [ ] Frontend: configurar persistencia con localStorage
-- [ ] Frontend: redirect automático a /dashboard
-- [ ] Backend: middleware para verificar JWT en rutas protegidas
+- [x] [2025-10-06] Frontend: crear LoginForm con remember me
+- [x] [2025-10-06] Frontend: implementar AuthContext con Zustand
+- [x] [2025-10-06] Frontend: configurar persistencia con localStorage
+- [x] [2025-10-06] Frontend: redirect automático a /dashboard
+- [x] [2025-10-06] Frontend: crear Dashboard placeholder page
 
 **DoD:**
 
-- [ ] Login exitoso redirige a dashboard
-- [ ] Sesión persiste en refresh
-- [ ] Logout limpia sesión completamente
+- [x] Login exitoso redirige a dashboard
+- [x] Sesión persiste en refresh
+- [x] Logout limpia sesión completamente
 
-**Story Points:** 3  
-**Prioridad:** P0  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P0
+**Sprint:** 1
 **Asignado a:** Full Stack
+**Status:** ✅ Completed [2025-10-06]
 **Dependencias:** US-005
+
+**Deliverables:**
+
+- `wallai-web/src/stores/authStore.ts` - Zustand store for global auth state with localStorage persistence
+- `wallai-web/src/features/auth/components/LoginForm.tsx` - Login form with modern UI, password toggle, remember me
+- `wallai-web/src/features/auth/pages/LoginPage.tsx` - Split-screen login page matching RegisterPage design
+- `wallai-web/src/pages/Dashboard.tsx` - Protected dashboard page with logout functionality
+- `wallai-web/src/App.tsx` - Updated routing with /login and /dashboard routes, auth initialization
+- `wallai-web/src/features/auth/pages/ForgotPasswordPage.tsx` - Password reset page ✅ NEW [2025-10-07]
+- `wallai-web/src/features/auth/components/SocialLoginButtons.tsx` - OAuth buttons ✅ NEW [2025-10-07]
+- `wallai-web/src/pages/AuthCallback.tsx` - OAuth callback handler ✅ NEW [2025-10-07]
+- `database/migrations/FIX_OAUTH_TRIGGER.sql` - OAuth user creation fix ✅ NEW [2025-10-07]
+
+**Características Implementadas:**
+
+- ✅ Email and password validation with Zod
+- ✅ Show/hide password toggle
+- ✅ Remember me checkbox (fully functional with extended session)
+- ✅ Forgot password page (complete implementation) ✅ NEW [2025-10-07]
+- ✅ Google OAuth login (fully functional) ✅ NEW [2025-10-07]
+- ✅ Apple OAuth button (Coming Soon badge) ✅ NEW [2025-10-07]
+- ✅ Social login buttons component (reusable) ✅ NEW [2025-10-07]
+- ✅ OAuth callback handler with session management ✅ NEW [2025-10-07]
+- ✅ Database trigger for OAuth user creation ✅ NEW [2025-10-07]
+- ✅ Error handling with shake animation
+- ✅ Loading states with spinner
+- ✅ Automatic redirect to /dashboard after login
+- ✅ Session persistence with localStorage (via Zustand persist middleware)
+- ✅ Auth state initialization on app mount
+- ✅ Protected Dashboard page with user info display
+- ✅ Logout functionality that clears session and redirects to /login
+- ✅ Split-screen design matching RegisterPage UX/UI
+- ✅ Responsive design (mobile + desktop)
+- ✅ Modern gradients and glassmorphism effects
+- ✅ Stats cards with placeholder data
+- ✅ Professional Heroicons throughout
+
+**Authentication Enhancements [2025-10-07]:**
+
+- ✅ `wallai-web/src/features/auth/pages/ForgotPasswordPage.tsx` - Password reset request page
+- ✅ `wallai-web/src/features/auth/components/SocialLoginButtons.tsx` - Google/Apple OAuth buttons
+- ✅ `wallai-web/src/pages/AuthCallback.tsx` - OAuth callback handler
+- ✅ `database/migrations/FIX_OAUTH_TRIGGER.sql` - Fixed trigger for OAuth support with auto username generation
+
+**Next Steps:**
+
+1. ✅ ~~Add forgot password functionality~~ DONE [2025-10-07]
+2. ✅ ~~Implement Google OAuth~~ DONE [2025-10-07]
+3. ✅ ~~Fix Remember Me checkbox~~ DONE [2025-10-07]
+4. Implement US-007 (Protected Routes) with PrivateRoute component
+5. Add email verification check before login
 
 ---
 
@@ -363,44 +623,417 @@
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: crear ProtectedRoute component
-- [ ] Frontend: implementar useAuth hook
-- [ ] Frontend: configurar React Router con rutas públicas/privadas
-- [ ] Frontend: guardar intended URL para redirect post-login
+- [x] [2025-10-07] Frontend: crear ProtectedRoute component
+- [x] [2025-10-07] Frontend: implementar useAuth hook
+- [x] [2025-10-07] Frontend: configurar React Router con rutas públicas/privadas
+- [x] [2025-10-07] Frontend: guardar intended URL para redirect post-login
 
 **DoD:**
 
-- [ ] Rutas privadas requieren auth
-- [ ] Redirect funciona correctamente
-- [ ] Loading state mientras verifica auth
+- [x] Rutas privadas requieren auth
+- [x] Redirect funciona correctamente
+- [x] Loading state mientras verifica auth
 
-**Story Points:** 2  
-**Prioridad:** P0  
-**Sprint:** 1  
+**Story Points:** 2
+**Prioridad:** P0
+**Sprint:** 1
 **Asignado a:** Frontend
+**Status:** ✅ Completed [2025-10-07]
 **Dependencias:** US-006
+
+**Deliverables:**
+
+- `wallai-web/src/components/routes/PrivateRoute.tsx` - Protected route component with auth check and loading state
+- `wallai-web/src/hooks/useAuth.ts` - Custom hook for easy access to auth state
+- `wallai-web/src/components/routes/index.ts` - Routes barrel export
+- `wallai-web/src/App.tsx` - Updated with PrivateRoute protecting /dashboard
+- `wallai-web/src/features/auth/components/LoginForm.tsx` - Enhanced to redirect to intended URL after login
+
+**Características Implementadas:**
+
+- ✅ PrivateRoute component that checks authentication
+- ✅ Loading spinner while verifying auth state
+- ✅ Automatic redirect to /login for unauthenticated users
+- ✅ Saves intended URL in location state
+- ✅ Redirects to intended URL after successful login
+- ✅ useAuth hook for convenient auth state access
+- ✅ Protected /dashboard route
+- ✅ Replace navigation to prevent back button issues
+
+**Testing Scenarios:**
+
+1. ✅ Unauthenticated user tries /dashboard → redirects to /login
+2. ✅ User logs in → redirects back to intended URL (/dashboard)
+3. ✅ Authenticated user navigates freely
+4. ✅ Session persists on page refresh
+5. ✅ Loading state shows while checking auth
 
 ---
 
-## ÉPICA 3: ESPACIOS COLABORATIVOS
+## 🎯 SCOPE ACTUAL: ONBOARDING MVP
 
-### US-008: Crear Espacio
+**En este sprint estamos implementando SOLO:**
+- Onboarding de 3 pantallas (US-008.x)
+- Header y Navbar básico (US-009)
+- Dashboard inicial con empty state (US-010)
 
-**Como** usuario autenticado, **quiero** crear un espacio compartido, **para** gestionar finanzas con otros.
+**NO implementaremos aún (futuro):**
+- Gestión avanzada de Spaces (crear/editar/eliminar espacios adicionales)
+- CRUD completo de Budgets (eso viene en Sprint 2)
+- Gestión de Expenses avanzada
+- Invitaciones a espacios
+- Colaboración multi-usuario
+
+**Razón:** El usuario completa onboarding y puede empezar a usar la app. Las funciones colaborativas avanzadas vienen después.
+
+---
+
+## ÉPICA 2: ONBOARDING Y SETUP INICIAL
+
+### US-008.1: Pantalla de Bienvenida ✅
+
+**Como** usuario nuevo, **quiero** ver una pantalla de bienvenida, **para** entender el valor de Wallai antes de configurar mi espacio.
 
 **Criterios de Aceptación:**
 
-- DADO que estoy autenticado
-- CUANDO creo un espacio con nombre
-- ENTONCES se genera código de invitación de 6 caracteres
-- Y soy asignado como owner del espacio
+- DADO que acabo de registrarme/logearme por primera vez
+- CUANDO entro a la aplicación
+- ENTONCES veo pantalla de bienvenida con información clara
+- Y puedo hacer click en "Comenzar" para continuar
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: CreateSpaceModal con formulario
-- [ ] Backend: POST /api/spaces endpoint
-- [ ] Backend: generar código único de 6 chars (sin O,0,I,1)
-- [ ] DB: insertar space y space_member con role="owner"
+- [x] [2025-10-09] Frontend: crear página `/onboarding/welcome`
+- [x] [2025-10-09] Frontend: diseñar layout con logo, título y beneficios clave
+- [x] [2025-10-09] Frontend: botón "Comenzar" con navegación a siguiente paso
+- [x] [2025-10-09] Frontend: integrar con OnboardingContext para tracking de progreso
+
+**DoD:**
+
+- [x] Pantalla responsive (mobile/desktop)
+- [x] Animación de entrada suave
+- [x] Navegación funcional a paso 2
+
+**Story Points:** 2
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Frontend
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-007
+
+**Deliverables:**
+
+- `wallai-web/src/features/onboarding/pages/WelcomePage.tsx` - Welcome screen with hero section
+- `wallai-web/src/features/onboarding/index.ts` - Feature barrel export
+- Route configured at `/onboarding/welcome`
+
+---
+
+### US-008.2: Configuración de Espacio Personal ✅
+
+**Como** usuario nuevo, **quiero** crear mi espacio personal con moneda preferida, **para** comenzar a gestionar mis finanzas.
+
+**Criterios de Aceptación:**
+
+- DADO que estoy en pantalla 2 del onboarding
+- CUANDO ingreso nombre del espacio y selecciono moneda (USD/CAD/MXN)
+- ENTONCES se crea espacio con `is_personal = true`
+- Y se genera invite_code único de 6 caracteres
+- Y puedo continuar al siguiente paso
+
+**Tasks Técnicas:**
+
+- [x] [2025-10-09] Frontend: crear página `/onboarding/space`
+- [x] [2025-10-09] Frontend: formulario con validación (nombre 3-50 chars)
+- [x] [2025-10-09] Frontend: selector de moneda con banderas (USD/CAD/EUR/MXN)
+- [x] [2025-10-09] Backend: endpoint POST `/api/onboarding/space`
+- [x] [2025-10-09] Backend: validar que usuario no tenga espacio personal previo
+- [x] [2025-10-09] Backend: generar invite_code único (6 chars alfanuméricos)
+- [x] [2025-10-09] DB: agregar columna `is_personal` a tabla `spaces`
+
+**DoD:**
+
+- [x] Validación en tiempo real
+- [x] Error si ya tiene espacio personal
+- [x] Loading state durante creación
+- [x] Space ID guardado en context
+
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Full Stack
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-008.1
+
+**Deliverables:**
+
+- `wallai-web/src/features/onboarding/pages/SpaceSetupPage.tsx` - Space creation form with currency selector
+- `wallai-web/src/services/onboarding.service.ts` - Onboarding API service
+- `wallai-web/src/types/Onboarding.types.ts` - TypeScript types for onboarding
+- `apps/api/src/api/routes/onboarding.py` - Onboarding endpoints
+- `apps/api/src/services/onboarding_service.py` - Onboarding business logic
+- `apps/api/src/schemas/onboarding.py` - Pydantic schemas
+- Migration: Added `is_personal` column to spaces table
+
+---
+
+### US-008.3: Presupuesto Express ✅
+
+**Como** usuario nuevo, **quiero** configurar mi primer presupuesto rápidamente, **para** empezar con una base financiera organizada.
+
+**Criterios de Aceptación:**
+
+- DADO que estoy en pantalla 3 del onboarding
+- CUANDO ingreso mi ingreso mensual y selecciono framework (50/30/20, zero-based, skip)
+- ENTONCES se crea presupuesto con categorías automáticas según framework
+- Y se marca `onboarding_completed = true`
+- Y soy redirigido al dashboard
+
+**Tasks Técnicas:**
+
+- [x] [2025-10-09] Frontend: crear página `/onboarding/budget`
+- [x] [2025-10-09] Frontend: formulario con ingreso mensual
+- [x] [2025-10-09] Frontend: implementar framework 50/30/20 automático
+- [x] [2025-10-09] Frontend: mostrar preview de categorías generadas
+- [x] [2025-10-09] Backend: endpoint POST `/api/onboarding/budget`
+- [x] [2025-10-09] Backend: lógica para generar budget_items según framework 50/30/20
+- [x] [2025-10-09] Backend: endpoint PUT `/api/user/complete-onboarding`
+- [x] [2025-10-09] DB: agregar columna `auto_generated` a tabla `budgets`
+
+**DoD:**
+
+- [x] Framework 50/30/20 genera 7 categorías automáticas (Needs 50%, Wants 30%, Savings 20%)
+- [x] Budget items creados con montos asignados
+- [x] onboarding_completed flag actualizado
+- [x] Redirect exitoso a dashboard
+
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Full Stack
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-008.2
+
+**Deliverables:**
+
+- `wallai-web/src/features/onboarding/pages/BudgetExpressPage.tsx` - Budget express form with 50/30/20 framework
+- `wallai-web/src/context/OnboardingContext.tsx` - React context for onboarding state
+- Backend: Auto-generation of 7 budget items (Housing, Transportation, Food, Utilities, Entertainment, Personal, Savings)
+- Migration: Added `auto_generated` column to budgets table
+- Complete onboarding endpoint that marks user as onboarded
+
+---
+
+### US-008.4: Estado de Onboarding ✅
+
+**Como** desarrollador, **quiero** verificar el estado de onboarding del usuario, **para** dirigirlo a la pantalla correcta.
+
+**Criterios de Aceptación:**
+
+- DADO que un usuario se autentica
+- CUANDO verifico su estado de onboarding
+- ENTONCES obtengo flags de: needs_onboarding, has_personal_space, has_budget
+- Y puedo redirigirlo apropiadamente
+
+**Tasks Técnicas:**
+
+- [x] [2025-10-09] Backend: endpoint GET `/api/user/onboarding-status`
+- [x] [2025-10-09] Frontend: modificar LoginForm para verificar status
+- [x] [2025-10-09] Frontend: actualizar PrivateRoute con guard de onboarding
+- [x] [2025-10-09] Frontend: servicio `onboarding.service.ts` con API calls
+
+**DoD:**
+
+- [x] Login redirect funciona correctamente (redirects to /onboarding/welcome if incomplete)
+- [x] PrivateRoute guards against incomplete onboarding
+- [x] Usuario existente con onboarding completo va directo a dashboard
+- [x] Reload mantiene estado correcto
+
+**Story Points:** 2
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Full Stack
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-007
+
+**Deliverables:**
+
+- Backend endpoint: `GET /api/user/onboarding-status` returning `needs_onboarding`, `has_personal_space`, `has_budget`
+- `wallai-web/src/components/routes/PrivateRoute.tsx` - Enhanced with onboarding guard (lines 65-69)
+- `wallai-web/src/features/auth/components/LoginForm.tsx` - Onboarding status check after login (lines 60-67)
+- `wallai-web/src/services/onboarding.service.ts` - Frontend service with getStatus() method
+- Complete redirect flow working end-to-end
+
+---
+
+### US-008.5: Migraciones de Base de Datos ✅
+
+**Como** desarrollador, **quiero** actualizar el schema de base de datos, **para** soportar el flujo de onboarding.
+
+**Criterios de Aceptación:**
+
+- DADO que necesito nuevas columnas para onboarding
+- CUANDO ejecuto las migraciones
+- ENTONCES se agregan columnas: onboarding_completed, is_personal, auto_generated
+- Y no se pierden datos existentes
+
+**Tasks Técnicas:**
+
+- [x] [2025-10-09] DB: crear migración `004_onboarding_columns.sql`
+- [x] [2025-10-09] DB: agregar `onboarding_completed BOOLEAN DEFAULT FALSE` a `user_profiles`
+- [x] [2025-10-09] DB: agregar `is_personal BOOLEAN DEFAULT FALSE` a `spaces`
+- [x] [2025-10-09] DB: agregar `auto_generated BOOLEAN DEFAULT FALSE` a `budgets`
+- [x] [2025-10-09] DB: crear índice en spaces(created_by, is_personal) para performance
+- [x] [2025-10-09] DB: verificar RLS policies funcionan con nuevas columnas
+
+**DoD:**
+
+- [x] Migraciones ejecutadas sin errores
+- [x] Rollback script creado y probado
+- [x] RLS policies funcionando correctamente
+- [x] Documentación completa actualizada
+
+**Story Points:** 1
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Backend Lead
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-004
+
+**Deliverables:**
+
+- `database/migrations/004_onboarding_columns.sql` - Migration with 3 new columns
+- `database/migrations/ROLLBACK_004_onboarding_columns.sql` - Complete rollback script
+- `database/migrations/README_ONBOARDING.md` - Comprehensive onboarding migrations documentation (350+ lines)
+- `database/migrations/CLEANUP_USER_ONBOARDING.sql` - User cleanup utility script
+- `apps/api/cleanup_user.py` - Python cleanup script for development
+- Index created: `idx_spaces_is_personal` for query optimization
+- All columns verified in production database
+
+---
+
+## ÉPICA 3: NAVEGACIÓN Y UI BASE
+
+### US-009: Header y Navbar Principal ✅
+
+**Como** usuario autenticado, **quiero** tener navegación global, **para** acceder a todas las secciones de la app fácilmente.
+
+**Criterios de Aceptación:**
+
+- DADO que estoy autenticado y completé onboarding
+- CUANDO navego por la aplicación
+- ENTONCES veo header con: logo, menú principal, selector de espacio, user dropdown
+- Y puedo navegar entre Dashboard, Spaces, Budgets, Expenses
+
+**Tasks Técnicas:**
+
+- [x] [2025-10-09] Frontend: crear componente `Header.tsx` con logo
+- [x] [2025-10-09] Frontend: crear componente `NavBar.tsx` con links principales
+- [x] [2025-10-09] Frontend: crear componente `SpaceSelector.tsx` (placeholder por ahora)
+- [x] [2025-10-09] Frontend: crear componente `UserDropdown.tsx` con logout
+- [x] [2025-10-09] Frontend: integrar en layout principal
+- [x] [2025-10-09] Frontend: hacer responsive con menú hamburguesa en mobile
+
+**DoD:**
+
+- [x] Navegación funcional en todas las rutas
+- [x] Responsive en mobile/tablet/desktop
+- [x] Active state en link actual
+- [x] Logout funcional
+
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Frontend
+**Status:** ✅ Completed [2025-10-09]
+**Dependencias:** US-008.4
+
+**Deliverables:**
+
+- `wallai-web/src/components/layout/Header.tsx` - Header with logo, navigation, and mobile menu
+- `wallai-web/src/components/layout/NavBar.tsx` - Navigation links with active state (Desktop + Mobile)
+- `wallai-web/src/components/layout/SpaceSelector.tsx` - Placeholder for space switching
+- `wallai-web/src/components/layout/UserDropdown.tsx` - User menu with logout (Desktop + Mobile)
+- `wallai-web/src/components/layout/MainLayout.tsx` - Layout wrapper with Header and Outlet
+- `wallai-web/src/components/layout/index.ts` - Barrel export for layout components
+- `wallai-web/src/App.tsx` - Updated to use MainLayout for protected routes
+- `wallai-web/src/pages/Dashboard.tsx` - Simplified to remove redundant header
+
+**Características Implementadas:**
+
+- ✅ Header sticky con logo horizontal Wallai
+- ✅ NavBar con 4 links principales (Dashboard, Spaces, Budgets, Expenses)
+- ✅ Active state visual en link actual (bg-wallai-green/10)
+- ✅ SpaceSelector placeholder (disabled, tooltip "Coming in Sprint 2")
+- ✅ UserDropdown con username, email, settings, y logout
+- ✅ Click outside to close dropdown
+- ✅ Mobile hamburger menu (Bars3Icon / XMarkIcon toggle)
+- ✅ Mobile vertical navigation con íconos
+- ✅ Mobile space selector y user menu integrados
+- ✅ Responsive breakpoints (md: tablet, lg: desktop)
+- ✅ MainLayout con Outlet para nested routes
+- ✅ Placeholder pages para Spaces, Budgets, Expenses, Settings
+- ✅ Logout funcional con redirect a /login
+- ✅ Professional Heroicons (HomeIcon, CubeIcon, BanknotesIcon, ReceiptPercentIcon)
+- ✅ Consistent brand colors (wallai-green, wallai-teal)
+
+---
+
+### US-010: Dashboard Inicial
+
+**Como** usuario, **quiero** ver un dashboard con mi información financiera, **para** tener una visión general de mi situación.
+
+**Criterios de Aceptación:**
+
+- DADO que completé el onboarding
+- CUANDO accedo al dashboard
+- ENTONCES veo: resumen del mes actual O empty state si no hay datos
+- Y puedo crear mi primer presupuesto desde el empty state
+
+**Tasks Técnicas:**
+
+- [ ] Frontend: actualizar `Dashboard.tsx` con layout de cards
+- [ ] Frontend: crear componente `EmptyBudgetState.tsx`
+- [ ] Frontend: crear componente `BudgetSummaryCard.tsx`
+- [ ] Frontend: crear componente `QuickStats.tsx`
+- [ ] Backend: endpoint GET `/api/dashboard/summary`
+- [ ] Frontend: integrar con React Query para data fetching
+
+**DoD:**
+
+- [ ] Empty state atractivo con CTA
+- [ ] Dashboard muestra datos si existen
+- [ ] Loading states implementados
+- [ ] Responsive design
+
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 1
+**Asignado a:** Full Stack
+**Dependencias:** US-009
+
+---
+
+## ÉPICA 4: ESPACIOS COLABORATIVOS (FUTURO - SPRINT 2+)
+
+### US-011: Crear Espacios Adicionales
+
+**Como** usuario con espacio personal, **quiero** crear espacios adicionales, **para** gestionar finanzas separadas o compartidas.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
+
+**Criterios de Aceptación:**
+
+- DADO que ya tengo mi espacio personal
+- CUANDO creo un nuevo espacio
+- ENTONCES puedo elegir nombre, moneda y tipo (compartido/proyecto)
+- Y se genera código de invitación único
+
+**Tasks Técnicas:**
+
+- [ ] Frontend: Modal de creación de espacio
+- [ ] Backend: Endpoint para múltiples espacios
+- [ ] Backend: Lógica de permisos y roles
 
 **DoD:**
 
@@ -408,17 +1041,18 @@
 - [ ] Código de invitación copiable
 - [ ] Owner tiene permisos totales
 
-**Story Points:** 3  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-007
 
 ---
 
-### US-009: Sistema de Invitaciones
+### US-012: Sistema de Invitaciones
 
-**Como** miembro de espacio, **quiero** invitar a otros con un código, **para** compartir la gestión financiera.
+**Como** owner de espacio, **quiero** invitar a otros con un código, **para** compartir la gestión financiera.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -440,17 +1074,18 @@
 - [ ] Códigos inválidos muestran error claro
 - [ ] Límite de miembros respetado
 
-**Story Points:** 3  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-008
 
 ---
 
-### US-010: Cambio de Espacio
+### US-013: Cambio de Espacio
 
 **Como** usuario con múltiples espacios, **quiero** cambiar entre ellos, **para** ver diferentes presupuestos.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -461,7 +1096,7 @@
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: SpaceSelector dropdown en header
+- [ ] Frontend: SpaceSelector funcional completo
 - [ ] Frontend: actualizar currentSpaceId en Zustand
 - [ ] Frontend: refrescar queries al cambiar espacio
 - [ ] Backend: filtrar todos los endpoints por space_id
@@ -472,19 +1107,20 @@
 - [ ] Datos correctos por espacio
 - [ ] Última selección persistida
 
-**Story Points:** 2  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 2
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Frontend
-**Dependencias:** US-009
 
 ---
 
-## ÉPICA 4: GESTIÓN DE PRESUPUESTOS
+## ÉPICA 5: GESTIÓN DE PRESUPUESTOS (FUTURO - SPRINT 2+)
 
-### US-011: Crear Presupuesto Master
+### US-014: CRUD Completo de Presupuestos
 
-**Como** miembro de espacio, **quiero** crear el presupuesto mensual principal, **para** organizar mis finanzas.
+**Como** usuario con espacio, **quiero** gestión completa de presupuestos mensuales, **para** organizar mis finanzas detalladamente.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -499,7 +1135,7 @@
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: CreateBudgetForm con selector de framework
+- [ ] Frontend: CreateBudgetForm avanzado
 - [ ] Backend: POST /api/spaces/{id}/budgets
 - [ ] Backend: validar unicidad de master budget por mes
 - [ ] DB: crear budget con budget_items automáticos según framework
@@ -507,20 +1143,21 @@
 **DoD:**
 
 - [ ] Budget creado con items predefinidos
-- [ ] Framework aplicado correctamente (50/30/20)
+- [ ] Framework aplicado correctamente
 - [ ] Validación impide duplicados
 
-**Story Points:** 5  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 5
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-010
 
 ---
 
-### US-012: Gestión de Budget Items
+### US-015: Gestión de Budget Items
 
 **Como** usuario con presupuesto, **quiero** gestionar las categorías de gasto, **para** distribuir mi dinero.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -545,19 +1182,20 @@
 - [ ] Totales siempre correctos
 - [ ] Validación de montos positivos
 
-**Story Points:** 3  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-011
 
 ---
 
-## ÉPICA 5: TRACKING DE GASTOS
+## ÉPICA 6: TRACKING DE GASTOS (FUTURO - SPRINT 2+)
 
-### US-013: Registro Rápido de Gasto
+### US-016: Registro Rápido de Gasto
 
 **Como** usuario, **quiero** registrar gastos rápidamente, **para** mantener mi tracking al día.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -584,17 +1222,18 @@
 - [ ] Categorización automática funciona
 - [ ] Budget actualizado en tiempo real
 
-**Story Points:** 5  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 5
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-012
 
 ---
 
-### US-014: Lista de Gastos
+### US-017: Lista de Gastos
 
 **Como** usuario, **quiero** ver todos mis gastos del mes, **para** entender mis patrones de consumo.
+
+**Status:** 🔮 **FUTURO - SPRINT 2+**
 
 **Criterios de Aceptación:**
 
@@ -619,55 +1258,20 @@
 - [ ] Filtros funcionan correctamente
 - [ ] Scroll infinito implementado
 
-**Story Points:** 3  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P1
+**Sprint:** 2+
 **Asignado a:** Full Stack
-**Dependencias:** US-013
 
 ---
 
-## ÉPICA 6: DASHBOARD Y VISUALIZACIÓN
+## ÉPICA 7: PWA Y MEJORAS UX (FUTURO - SPRINT 3+)
 
-### US-015: Dashboard Principal
-
-**Como** usuario, **quiero** ver un resumen de mis finanzas, **para** tomar decisiones informadas.
-
-**Criterios de Aceptación:**
-
-- DADO que tengo datos financieros
-- CUANDO accedo al dashboard
-- ENTONCES veo:
-  - Resumen del mes (ingresos, gastos, balance)
-  - Progreso de presupuesto por categoría
-  - Top 5 gastos del mes
-  - Gráfico de tendencia semanal
-
-**Tasks Técnicas:**
-
-- [ ] Frontend: DashboardPage con grid responsive
-- [ ] Frontend: componentes de métricas (MetricCard)
-- [ ] Frontend: gráficos con Recharts
-- [ ] Backend: GET /api/dashboard/summary endpoint
-- [ ] Backend: caching con Redis para métricas
-
-**DoD:**
-
-- [ ] Dashboard carga en < 2 segundos
-- [ ] Responsive en mobile/tablet/desktop
-- [ ] Datos actualizados en tiempo real
-
-**Story Points:** 5  
-**Prioridad:** P1  
-**Sprint:** 1  
-**Asignado a:** Full Stack
-**Dependencias:** US-014
-
----
-
-### US-016: Configuración PWA
+### US-018: Configuración PWA
 
 **Como** usuario móvil, **quiero** instalar la app en mi teléfono, **para** acceso rápido sin app store.
+
+**Status:** 🔮 **FUTURO - SPRINT 3+**
 
 **Criterios de Aceptación:**
 
@@ -690,19 +1294,18 @@
 - [ ] Funciona offline (lectura)
 - [ ] Lighthouse PWA score > 90
 
-**Story Points:** 3  
-**Prioridad:** P1  
-**Sprint:** 1  
+**Story Points:** 3
+**Prioridad:** P2
+**Sprint:** 3+
 **Asignado a:** Frontend
-**Dependencias:** US-015
 
 ---
 
-## ÉPICA 7: MEJORAS UX (P2)
-
-### US-017: Estados de Carga
+### US-019: Estados de Carga
 
 **Como** usuario, **quiero** feedback visual mientras espero, **para** saber que la app está funcionando.
+
+**Status:** 🔮 **FUTURO - SPRINT 3+**
 
 **Criterios de Aceptación:**
 
@@ -722,16 +1325,18 @@
 - [ ] Todos los estados async cubiertos
 - [ ] Consistent loading patterns
 
-**Story Points:** 2  
-**Prioridad:** P2  
-**Sprint:** 1  
+**Story Points:** 2
+**Prioridad:** P2
+**Sprint:** 3+
 **Asignado a:** Frontend
 
 ---
 
-### US-018: Modo Oscuro
+### US-020: Modo Oscuro
 
 **Como** usuario, **quiero** cambiar entre tema claro/oscuro, **para** mi preferencia visual.
+
+**Status:** 🔮 **FUTURO - SPRINT 3+**
 
 **Criterios de Aceptación:**
 
@@ -751,41 +1356,60 @@
 - [ ] Todos los componentes soportan dark
 - [ ] Transición suave entre temas
 
-**Story Points:** 2  
-**Prioridad:** P2  
-**Sprint:** 1  
+**Story Points:** 2
+**Prioridad:** P2
+**Sprint:** 3+
 **Asignado a:** Frontend
 
 ---
 
 ## RESUMEN DE MÉTRICAS
 
-### Distribución por Prioridad
+### 🎯 MVP Actual - Sprint 1
 
-- **P0 (Critical):** 7 stories - 25 points
-- **P1 (Important):** 9 stories - 37 points
-- **P2 (Nice to have):** 2 stories - 4 points
+**Onboarding + UI Base:**
+- US-008.1: Pantalla Bienvenida - 1 point (P0)
+- US-008.2: Espacio Personal - 3 points (P0)
+- US-008.3: Presupuesto Express - 3 points (P0)
+- US-008.4: Estado Onboarding - 2 points (P0)
+- US-008.5: Migraciones DB - 2 points (P0)
+- US-009: Header y Navbar - 3 points (P1)
+- US-010: Dashboard Inicial - 3 points (P1)
 
-### Distribución por Épica
+**Total MVP Onboarding: 17 story points**
 
-- **Configuración:** 4 stories - 13 points
-- **Autenticación:** 3 stories - 10 points
-- **Espacios:** 3 stories - 8 points
-- **Presupuestos:** 2 stories - 8 points
-- **Gastos:** 2 stories - 8 points
-- **Dashboard:** 2 stories - 8 points
-- **UX:** 2 stories - 4 points
+### Distribución por Prioridad (Sprint 1 Actual)
 
-### Asignación por Rol
+- **P0 (Critical - Completado):** 7 stories - 23 points ✅
+  - US-001 a US-007: Completadas
+- **P0 (Critical - En Progreso):** 5 stories - 11 points
+  - US-008.1 a US-008.5: Onboarding
+- **P1 (Important - Actual):** 2 stories - 6 points
+  - US-009: Header/Navbar
+  - US-010: Dashboard
+- **P1-P2 (Futuro):** 10+ stories - Sprint 2+
 
-- **Backend Lead:** 4 stories
-- **Frontend Lead:** 5 stories
-- **Full Stack:** 9 stories
+### Distribución por Épica (Actualizada)
 
-### Velocidad Estimada
+**Sprint 1 - Completado:**
+- **Configuración:** 4 stories - 13 points ✅
+- **Autenticación:** 3 stories - 10 points ✅
 
-- **Semana 1:** US-001 a US-007 (25 points)
-- **Semana 2:** US-008 a US-018 (64 points)
+**Sprint 1 - En Progreso:**
+- **Onboarding:** 5 stories - 11 points
+- **Navegación:** 2 stories - 6 points
+
+**Sprint 2+ - Futuro:**
+- **Espacios Colaborativos:** 3 stories - 8 points
+- **Presupuestos CRUD:** 2 stories - 8 points
+- **Tracking Gastos:** 2 stories - 8 points
+- **PWA y UX:** 3 stories - 7 points
+
+### Velocidad Real
+
+- **Día 1-3:** US-001 a US-007 (23 points) ✅
+- **Día 4-7:** US-008 + US-009 + US-010 (17 points)
+- **Velocidad promedio:** ~6 points/día
 
 ### Definition of Done Global
 
@@ -945,7 +1569,6 @@ Tasks that repeat regularly
 ### 🐛 Active Bugs
 
 - [ ] [P0] [BUG] Supabase RLS policy blocking space member queries
-
   - Steps: Create space, invite user, new user can't see space
   - Expected: Members should see spaces they belong to
   - Environment: Development
@@ -967,34 +1590,36 @@ Tasks that repeat regularly
 
 ### Current Sprint Statistics
 
-- **Total Tasks:** 18 User Stories
-- **Completed:** 1 (6%)
-- **In Progress:** 0
+- **Total Sprint 1 Stories:** 14 User Stories (7 completed + 7 pending)
+- **Completed:** 7 stories (50%) - 23 points
+- **Pending for MVP:** 7 stories - 17 points
 - **Blocked:** 0
-- **Not Started:** 17
+- **Future (Sprint 2+):** 10+ stories
 
 ### Velocity Tracking
 
-- **Sprint 0 (Setup):** 5 story points (planning)
-- **Sprint 1 (Week 1):** 2/89 story points (2%)
-- **Average Velocity:** TBD (need 2-3 sprints)
-- **Projected Completion:** On track for 8-week MVP
+- **Sprint 0 (Setup):** Planning phase
+- **Sprint 1 - Days 1-3:** 23 story points ✅ (Auth + Setup)
+- **Sprint 1 - Days 4-7:** 17 story points (Onboarding + UI)
+- **Average Velocity:** ~6 points/day
+- **Projected Completion:** On track for Day 7 MVP
 
-### Task Distribution
+### Task Distribution (Sprint 1 MVP)
 
-- **P0 Tasks:** 7 total, 1 completed (14%)
-- **P1 Tasks:** 9 total, 0 completed (0%)
-- **P2 Tasks:** 2 total, 0 completed (0%)
+- **P0 Tasks Completed:** 7/7 (100%) ✅
+- **P0 Tasks Pending:** 5 (Onboarding)
+- **P1 Tasks Pending:** 2 (Header + Dashboard)
+- **Future Tasks:** 10+ (Sprint 2+)
 
 ### Completion by Epic
 
-- **Configuración Inicial:** 1/4 (25%) ✅ US-001
-- **Autenticación:** 0/3 (0%)
-- **Espacios Colaborativos:** 0/3 (0%)
-- **Presupuestos:** 0/2 (0%)
-- **Gastos:** 0/2 (0%)
-- **Dashboard:** 0/2 (0%)
-- **UX:** 0/2 (0%)
+- **Configuración Inicial:** 4/4 (100%) ✅
+- **Autenticación:** 3/3 (100%) ✅
+- **Onboarding:** 0/5 (0%) - En progreso
+- **Navegación y UI:** 0/2 (0%) - Pendiente
+- **Espacios (Futuro):** Sprint 2+
+- **Presupuestos (Futuro):** Sprint 2+
+- **Gastos (Futuro):** Sprint 2+
 
 ---
 
@@ -1054,9 +1679,52 @@ Tasks that repeat regularly
 
 ---
 
-**Last Updated:** 2025-10-06 17:00
+## 📍 ROADMAP ACTUALIZADO
+
+### Sprint 1 - MVP Onboarding (Días 1-7)
+**Status:** En progreso - Día 3 de 7
+
+✅ **Completado (Días 1-3):**
+- Setup completo (Supabase, Frontend, Backend)
+- Sistema de autenticación (Register, Login, OAuth)
+- Protected Routes
+
+⏳ **En Progreso (Días 4-7):**
+- Onboarding de 3 pantallas
+- Header y Navbar
+- Dashboard con empty state
+
+### Sprint 2 - Features Core (Semana 2)
+🔮 **Futuro:**
+- Espacios colaborativos
+- CRUD de presupuestos
+- Tracking de gastos
+- Sistema de invitaciones
+
+### Sprint 3 - AI & Banking (Semanas 3-4)
+🔮 **Futuro:**
+- Integración Anthropic Claude
+- Chat conversacional
+- Auto-categorización
+- Conexión bancaria (Plaid)
+
+### Sprint 4 - Polish & Launch (Semanas 5-6)
+🔮 **Futuro:**
+- PWA configuration
+- Mobile app
+- Performance optimization
+- Beta launch
+
+---
+
+**Last Updated:** 2025-10-08
 **Updated By:** Claude Code
-**Next Review:** 2025-10-07 (Daily standup)
-**Sprint Progress:** 6% (Day 2 of 14)
+**Next Review:** Siguiente sesión de desarrollo
+**Sprint Progress:** Día 3 de 7 - 23/40 points completados (57.5%)
 **Environment Setup:** ✅ Complete
-**Ready for Development:** ✅ Yes
+**Ready for Onboarding Development:** ✅ Yes
+
+**Next Priority Tasks:**
+1. US-008.1: Pantalla de Bienvenida (1 point)
+2. US-008.2: Configuración de Espacio (3 points)
+3. US-008.3: Presupuesto Express (3 points)
