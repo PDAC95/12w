@@ -1,6 +1,14 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { RegisterPage } from './features/auth';
+import { RegisterPage, LoginPage, ForgotPasswordPage } from './features/auth';
+import { Dashboard, AuthCallback } from './pages';
+import { Chat } from './pages/Chat';
+import { WelcomePage, SpaceSetupPage, BudgetExpressPage } from './pages/onboarding';
 import { Logo } from './components/common';
+import { PrivateRoute } from './components/routes';
+import { MainLayout } from './components/layout';
+import { useAuthStore } from './stores/authStore';
+import { OnboardingProvider } from './context/OnboardingContext';
 
 /**
  * Landing Page Component
@@ -13,7 +21,7 @@ function LandingPage() {
           <Logo variant="horizontal" size={80} />
         </div>
         <h1 className="text-6xl font-bold text-dark-800">
-          Tu asistente financiero inteligente
+          Your intelligent financial assistant
         </h1>
         <p className="text-xl text-dark-600">
           Your AI-powered financial assistant is ready 🚀
@@ -41,35 +49,15 @@ function LandingPage() {
             to="/register"
             className="px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
-            Registrarse
+            Register
           </Link>
           <Link
             to="/login"
             className="px-6 py-3 bg-white text-primary-600 border-2 border-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
           >
-            Iniciar Sesión
+            Sign In
           </Link>
         </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Placeholder Login Page (US-006)
- */
-function LoginPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">Login Page</h1>
-        <p className="text-gray-600 mb-8">US-006: Coming soon...</p>
-        <Link
-          to="/"
-          className="text-primary-600 hover:text-primary-700 underline"
-        >
-          Volver al inicio
-        </Link>
       </div>
     </div>
   );
@@ -79,13 +67,67 @@ function LoginPage() {
  * Main App Component with Routing
  */
 function App() {
+  const initialize = useAuthStore((state) => state.initialize);
+
+  useEffect(() => {
+    // Initialize auth state on app mount
+    initialize();
+  }, [initialize]);
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+      <OnboardingProvider>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+
+          {/* Onboarding Routes (no layout) */}
+          <Route
+            path="/onboarding/welcome"
+            element={
+              <PrivateRoute>
+                <WelcomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/onboarding/space"
+            element={
+              <PrivateRoute>
+                <SpaceSetupPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/onboarding/budget"
+            element={
+              <PrivateRoute>
+                <BudgetExpressPage />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Protected Routes with MainLayout */}
+          <Route
+            element={
+              <PrivateRoute>
+                <MainLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/spaces" element={<div className="text-center py-12 text-gray-500">Spaces page coming soon</div>} />
+            <Route path="/budgets" element={<div className="text-center py-12 text-gray-500">Budgets page coming soon</div>} />
+            <Route path="/expenses" element={<div className="text-center py-12 text-gray-500">Expenses page coming soon</div>} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/reports" element={<div className="text-center py-12 text-gray-500">Reports page coming soon</div>} />
+            <Route path="/settings" element={<div className="text-center py-12 text-gray-500">Settings page coming soon</div>} />
+          </Route>
+        </Routes>
+      </OnboardingProvider>
     </BrowserRouter>
   );
 }
