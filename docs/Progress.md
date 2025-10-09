@@ -92,12 +92,12 @@
 
 ### 📅 2025-10-09 - Day 4 (Session 9)
 
-**Session Duration:** 1.5 hours
-**Developer:** Claude Code
+**Session Duration:** 3 hours
+**Developer:** Claude Code + User Feedback
 
 #### 🎯 Today's Goal
 
-Complete US-009 (Header y Navbar Principal) - Implement global navigation with header, navbar, and user dropdown
+Complete US-009 (Header y Navbar Principal) - Implement global navigation with modern glassmorphism design
 
 #### ✅ Completed
 
@@ -105,31 +105,84 @@ Complete US-009 (Header y Navbar Principal) - Implement global navigation with h
 
   - Story Points: 3
   - Priority: P1
-  - Key Features:
-    - Header component with logo, navigation, and mobile menu
-    - NavBar with 4 links (Dashboard, Spaces, Budgets, Expenses)
-    - Active state highlighting for current route
-    - SpaceSelector placeholder (disabled, Coming Soon)
-    - UserDropdown with username, email, settings, logout
-    - Mobile hamburger menu (Bars3Icon / XMarkIcon)
-    - Mobile vertical navigation layout
-    - MainLayout wrapper with Header and Outlet
-    - Responsive design (mobile/tablet/desktop)
-    - Click outside to close dropdown
-    - Professional Heroicons throughout
-    - Consistent brand colors (wallai-green, wallai-teal)
+  - **Final Design: Floating Glassmorphism Navigation (Proposal 3)**
+
+  - **Header Component (3-Part Layout):**
+    - Left: 3-dot vertical menu (⋮) for Space management - SidebarMenu component
+    - Center: Clickable Wallai logo (48px, absolute positioned, links to dashboard)
+    - Right: User avatar with initials (single letter, green background)
+    - Sticky positioning (top-0, z-50)
+    - Clean white background with subtle border
+
+  - **SidebarMenu (3-Dot Menu) - Space Management:**
+    - Create Space (with descriptive subtitle)
+    - Join Space (invitation code entry)
+    - View All Spaces (workspace management)
+    - Space Analytics (placeholder)
+    - Space Settings (placeholder)
+    - Dropdown positioned below button
+    - Click outside to close
+
+  - **UserDropdown - Enhanced Menu:**
+    - Avatar button with user initial (bg-primary-400)
+    - My Activity link
+    - Help & Support link
+    - Language selector (placeholder for future)
+    - Dark Mode toggle with animated switch (Moon/Sun icons)
+    - Profile link
+    - Settings link
+    - Logout button
+    - Click outside to close
+
+  - **NavBar - Dual Mode with Glassmorphism:**
+    - **Desktop (Sidebar):**
+      - Floating glassmorphism container (bg-white/80 backdrop-blur-xl)
+      - Left side fixed sidebar (w-64)
+      - Transparent background - content scrolls underneath
+      - Subtle green border (border-primary-200/50)
+      - 4 regular navigation items + Chat button at end
+      - Chat button: px-16, gradient background, icon only
+      - Regular items: icons + labels, active state with primary-50 background
+    - **Mobile (Bottom Navigation):**
+      - Floating pill design at bottom
+      - Glassmorphism effect (bg-white/80 backdrop-blur-xl rounded-full)
+      - Subtle green border (border-primary-200/50)
+      - Transparent background with pointer-events handling
+      - 4 regular items + Chat button in middle (enlarged)
+      - Chat button: px-16, gradient, scale-110
+      - pointer-events-none on container, pointer-events-auto on nav bar
+    - 5 Navigation Items:
+      1. Dashboard (HomeIcon)
+      2. Budgets (BanknotesIcon)
+      3. Chat (ChatBubbleLeftRightIcon) - Main button, gradient bg
+      4. Expenses (ReceiptPercentIcon)
+      5. Reports (ChartBarIcon)
+
+  - **Design Iterations:**
+    - Initial: Hamburger menu + horizontal nav
+    - Iteration 1: 3-dot menu, centered logo, avatar right
+    - Iteration 2: Bottom navbar for mobile
+    - Iteration 3: Sidebar for desktop, bottom for mobile
+    - Iteration 4: Space management in 3-dot menu
+    - Iteration 5: Enhanced UserDropdown with Dark Mode
+    - Iteration 6: 3 innovative navbar proposals created
+    - **Final: Proposal 3 - Floating Glassmorphism** ✅
+
   - Files created:
-    - `wallai-web/src/components/layout/Header.tsx` - Header with sticky positioning
-    - `wallai-web/src/components/layout/NavBar.tsx` - Navigation links (Desktop + Mobile)
-    - `wallai-web/src/components/layout/SpaceSelector.tsx` - Placeholder button
-    - `wallai-web/src/components/layout/UserDropdown.tsx` - User menu (Desktop + Mobile)
+    - `wallai-web/src/components/layout/Header.tsx` - 3-part layout header
+    - `wallai-web/src/components/layout/NavBar.tsx` - Dual-mode floating glassmorphism nav
+    - `wallai-web/src/components/layout/SidebarMenu.tsx` - Space management menu
+    - `wallai-web/src/components/layout/UserDropdown.tsx` - Enhanced user menu with Dark Mode
+    - `wallai-web/src/components/layout/SpaceSelector.tsx` - Gradient card design (not in final header)
     - `wallai-web/src/components/layout/MainLayout.tsx` - Layout wrapper
+    - `wallai-web/src/components/layout/NavBarProposals.tsx` - Design proposals showcase
     - `wallai-web/src/components/layout/index.ts` - Barrel export
+    - `wallai-web/src/pages/Chat.tsx` - Chat placeholder page
   - Files modified:
-    - `wallai-web/src/App.tsx` - Added MainLayout for protected routes
-    - `wallai-web/src/pages/Dashboard.tsx` - Removed redundant header
-  - Time spent: 1.5 hours
-  - Notes: Complete navigation system ready, all routes accessible
+    - `wallai-web/src/App.tsx` - Added MainLayout + Chat/Reports routes
+    - `wallai-web/src/pages/Dashboard.tsx` - Cleaned up for new layout
+  - Time spent: 3 hours
+  - Notes: Modern floating glassmorphism navigation system with innovative UX
 
 #### 🚧 In Progress
 
@@ -141,28 +194,37 @@ Complete US-009 (Header y Navbar Principal) - Implement global navigation with h
 
 #### 📝 Notes & Decisions
 
-- Header uses sticky positioning (sticky top-0)
-- NavBar supports both desktop horizontal and mobile vertical layouts
-- SpaceSelector is placeholder with tooltip "Coming in Sprint 2"
-- UserDropdown closes on click outside (useEffect + useRef)
-- MainLayout wraps all authenticated pages except onboarding
-- Onboarding routes bypass MainLayout (cleaner UX)
-- Mobile menu controlled by local state (useState)
-- Placeholder pages for Spaces, Budgets, Expenses, Settings
-- Dashboard simplified by removing redundant header
-- Active route highlighting using React Router's NavLink isActive
+- **Header Architecture:** 3-part layout with absolute centered logo, menu left, avatar right
+- **Logo:** Changed from default import to named import `{ Logo }`
+- **Avatar:** Shows single initial extracted from username with bg-primary-400
+- **3-Dot Menu:** Transformed from navigation to Space management commands
+- **UserDropdown:** Enhanced with My Activity, Help & Support, Language, Dark Mode toggle
+- **NavBar Desktop:** Floating glassmorphism sidebar on left, transparent background
+- **NavBar Mobile:** Floating pill at bottom, glassmorphism with pointer-events handling
+- **Chat Button:** Prominent gradient button, positioned at end (desktop) / middle (mobile)
+- **Glassmorphism:** bg-white/80 backdrop-blur-xl for modern transparent effect
+- **Border:** Subtle green border-primary-200/50 for visibility on white backgrounds
+- **Design Process:** User evaluated 3 proposals, selected Proposal 3 (Floating Glassmorphism)
+- **MainLayout:** Wraps all authenticated pages except onboarding
+- **Active States:** NavLink isActive for route highlighting
+- **Click Outside:** useRef + useEffect for dropdown closing
+- **Responsive:** Mobile-first approach with md: breakpoints
 
 #### ⏰ Time Tracking
 
-- Header component: 20 minutes
-- NavBar component: 15 minutes
-- SpaceSelector placeholder: 10 minutes
-- UserDropdown component: 25 minutes
-- MainLayout component: 10 minutes
-- App.tsx integration: 15 minutes
-- Dashboard cleanup: 10 minutes
-- Testing and verification: 15 minutes
-- **Total:** 1.5 hours
+- Initial Header component: 20 minutes
+- Header redesign (3-part layout): 30 minutes
+- Avatar with initials: 15 minutes
+- SidebarMenu transformation: 25 minutes
+- UserDropdown enhancement: 30 minutes
+- NavBar desktop/mobile split: 20 minutes
+- NavBar proposals (3 designs): 45 minutes
+- Proposal 3 implementation: 30 minutes
+- Chat page creation: 10 minutes
+- Routes integration: 15 minutes
+- Final adjustments (widths, positioning): 20 minutes
+- Testing and verification: 20 minutes
+- **Total:** 3 hours
 
 #### 📊 Sprint Progress
 
@@ -175,15 +237,25 @@ Complete US-009 (Header y Navbar Principal) - Implement global navigation with h
 
 #### 🎉 Milestone Reached
 
-**NAVIGATION SYSTEM COMPLETE** - Global navigation ready:
-- ✅ Header with logo and user dropdown
-- ✅ NavBar with 4 main links
-- ✅ Active state highlighting
-- ✅ Mobile hamburger menu
-- ✅ Responsive design (mobile/tablet/desktop)
+**MODERN NAVIGATION SYSTEM COMPLETE** - Innovative glassmorphism design:
+- ✅ Header with 3-part layout (3-dot menu, centered logo, avatar)
+- ✅ Space management in 3-dot menu (Create, Join, View All, Analytics, Settings)
+- ✅ Enhanced UserDropdown (My Activity, Help, Language, Dark Mode toggle)
+- ✅ Floating glassmorphism NavBar (desktop sidebar + mobile bottom pill)
+- ✅ 5 navigation items with Chat as prominent main button
+- ✅ Transparent background - content scrolls underneath
+- ✅ Subtle green border for visibility
+- ✅ Active state highlighting with primary colors
+- ✅ Responsive design with dual-mode navigation
 - ✅ MainLayout wrapper for all protected pages
 - ✅ Logout functionality working
-- ✅ SpaceSelector placeholder ready
+- ✅ Chat and Reports routes added
+
+**Design Innovation:**
+- Created 3 innovative navbar proposals
+- User-selected Proposal 3: Floating Glassmorphism
+- Modern UX with transparent backgrounds and blur effects
+- Mobile-first responsive approach
 
 **Next Phase:** Dashboard Inicial con empty state (US-010 - 3 pts)
 

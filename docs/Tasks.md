@@ -916,29 +916,44 @@
 
 ### US-009: Header y Navbar Principal ✅
 
-**Como** usuario autenticado, **quiero** tener navegación global, **para** acceder a todas las secciones de la app fácilmente.
+**Como** usuario autenticado, **quiero** tener navegación global con diseño moderno, **para** acceder a todas las secciones de la app fácilmente.
 
 **Criterios de Aceptación:**
 
 - DADO que estoy autenticado y completé onboarding
 - CUANDO navego por la aplicación
-- ENTONCES veo header con: logo, menú principal, selector de espacio, user dropdown
-- Y puedo navegar entre Dashboard, Spaces, Budgets, Expenses
+- ENTONCES veo header con: logo centrado, menú de espacios (3 puntos), user dropdown con avatar
+- Y puedo navegar entre Dashboard, Budgets, Expenses, Chat, Reports
+- Y el navbar usa diseño glassmorphism flotante (sidebar desktop, pill mobile)
+- Y el contenido de la página hace scroll por debajo de la navegación transparente
 
 **Tasks Técnicas:**
 
-- [x] [2025-10-09] Frontend: crear componente `Header.tsx` con logo
-- [x] [2025-10-09] Frontend: crear componente `NavBar.tsx` con links principales
-- [x] [2025-10-09] Frontend: crear componente `SpaceSelector.tsx` (placeholder por ahora)
-- [x] [2025-10-09] Frontend: crear componente `UserDropdown.tsx` con logout
-- [x] [2025-10-09] Frontend: integrar en layout principal
-- [x] [2025-10-09] Frontend: hacer responsive con menú hamburguesa en mobile
+- [x] [2025-10-09] Frontend: crear componente `Header.tsx` con 3-part layout
+- [x] [2025-10-09] Frontend: implementar logo centrado clickable (48px)
+- [x] [2025-10-09] Frontend: crear `SidebarMenu.tsx` (3-dot menu) para Space management
+- [x] [2025-10-09] Frontend: crear `UserDropdown.tsx` con avatar inicial + Dark Mode toggle
+- [x] [2025-10-09] Frontend: crear `NavBar.tsx` con glassmorphism flotante (dual-mode)
+- [x] [2025-10-09] Frontend: diseñar 3 propuestas innovadoras de navbar
+- [x] [2025-10-09] Frontend: implementar Proposal 3 (Floating Glassmorphism)
+- [x] [2025-10-09] Frontend: integrar Chat button prominente con gradient
+- [x] [2025-10-09] Frontend: configurar transparent background con pointer-events
+- [x] [2025-10-09] Frontend: agregar rutas /chat y /reports
+- [x] [2025-10-09] Frontend: hacer responsive (desktop sidebar, mobile bottom pill)
+- [x] [2025-10-09] Frontend: integrar en MainLayout
 
 **DoD:**
 
-- [x] Navegación funcional en todas las rutas
-- [x] Responsive en mobile/tablet/desktop
-- [x] Active state en link actual
+- [x] Navegación funcional en todas las rutas (5 links: Dashboard, Budgets, Expenses, Chat, Reports)
+- [x] Responsive dual-mode (sidebar desktop, pill mobile)
+- [x] Active state con primary colors
+- [x] Glassmorphism effect (bg-white/80 backdrop-blur-xl)
+- [x] Transparent background - content scrolls underneath
+- [x] Subtle green border (border-primary-200/50)
+- [x] Chat button prominente con gradient
+- [x] Space management en 3-dot menu
+- [x] UserDropdown con Dark Mode toggle
+- [x] Avatar con inicial de usuario
 - [x] Logout funcional
 
 **Story Points:** 3
@@ -950,32 +965,63 @@
 
 **Deliverables:**
 
-- `wallai-web/src/components/layout/Header.tsx` - Header with logo, navigation, and mobile menu
-- `wallai-web/src/components/layout/NavBar.tsx` - Navigation links with active state (Desktop + Mobile)
-- `wallai-web/src/components/layout/SpaceSelector.tsx` - Placeholder for space switching
-- `wallai-web/src/components/layout/UserDropdown.tsx` - User menu with logout (Desktop + Mobile)
+- `wallai-web/src/components/layout/Header.tsx` - 3-part layout (menu, logo, avatar)
+- `wallai-web/src/components/layout/NavBar.tsx` - Floating glassmorphism dual-mode nav
+- `wallai-web/src/components/layout/SidebarMenu.tsx` - 3-dot menu for Space management
+- `wallai-web/src/components/layout/UserDropdown.tsx` - Enhanced user menu with Dark Mode
+- `wallai-web/src/components/layout/SpaceSelector.tsx` - Gradient card design (not in final)
+- `wallai-web/src/components/layout/NavBarProposals.tsx` - Design proposals showcase
 - `wallai-web/src/components/layout/MainLayout.tsx` - Layout wrapper with Header and Outlet
 - `wallai-web/src/components/layout/index.ts` - Barrel export for layout components
-- `wallai-web/src/App.tsx` - Updated to use MainLayout for protected routes
-- `wallai-web/src/pages/Dashboard.tsx` - Simplified to remove redundant header
+- `wallai-web/src/pages/Chat.tsx` - Chat placeholder page with coming soon
+- `wallai-web/src/App.tsx` - Updated with MainLayout + Chat/Reports routes
+- `wallai-web/src/pages/Dashboard.tsx` - Cleaned up for new layout
 
 **Características Implementadas:**
 
-- ✅ Header sticky con logo horizontal Wallai
-- ✅ NavBar con 4 links principales (Dashboard, Spaces, Budgets, Expenses)
-- ✅ Active state visual en link actual (bg-wallai-green/10)
-- ✅ SpaceSelector placeholder (disabled, tooltip "Coming in Sprint 2")
-- ✅ UserDropdown con username, email, settings, y logout
-- ✅ Click outside to close dropdown
-- ✅ Mobile hamburger menu (Bars3Icon / XMarkIcon toggle)
-- ✅ Mobile vertical navigation con íconos
-- ✅ Mobile space selector y user menu integrados
-- ✅ Responsive breakpoints (md: tablet, lg: desktop)
-- ✅ MainLayout con Outlet para nested routes
-- ✅ Placeholder pages para Spaces, Budgets, Expenses, Settings
-- ✅ Logout funcional con redirect a /login
-- ✅ Professional Heroicons (HomeIcon, CubeIcon, BanknotesIcon, ReceiptPercentIcon)
-- ✅ Consistent brand colors (wallai-green, wallai-teal)
+**Header (3-Part Layout):**
+- ✅ 3-dot vertical menu (⋮) on left - SidebarMenu
+- ✅ Centered clickable Wallai logo (48px, absolute positioned)
+- ✅ User avatar on right with single initial (bg-primary-400)
+- ✅ Sticky positioning (top-0, z-50)
+- ✅ Clean white background with border
+
+**SidebarMenu (Space Management):**
+- ✅ Create Space (with subtitle)
+- ✅ Join Space (invitation code)
+- ✅ View All Spaces
+- ✅ Space Analytics (placeholder)
+- ✅ Space Settings (placeholder)
+- ✅ Dropdown positioned below button
+- ✅ Click outside to close
+
+**UserDropdown (Enhanced):**
+- ✅ Avatar button with user initial
+- ✅ My Activity link
+- ✅ Help & Support link
+- ✅ Language selector (placeholder)
+- ✅ Dark Mode toggle with animated switch (Moon/Sun icons)
+- ✅ Profile link
+- ✅ Settings link
+- ✅ Logout button
+- ✅ Click outside to close
+
+**NavBar (Floating Glassmorphism):**
+- ✅ Desktop: Floating sidebar (w-64) with glassmorphism
+- ✅ Mobile: Floating pill at bottom with glassmorphism
+- ✅ Transparent background (content scrolls underneath)
+- ✅ Subtle green border (border-primary-200/50)
+- ✅ 5 navigation items (Dashboard, Budgets, Chat, Expenses, Reports)
+- ✅ Chat button: Gradient bg, px-16, positioned at end (desktop) / middle (mobile)
+- ✅ Active state highlighting with primary-50 background
+- ✅ pointer-events handling for transparent scrolling
+- ✅ Responsive design with md: breakpoints
+
+**Design Innovation:**
+- ✅ Created 3 innovative navbar proposals (FAB, Spotlight, Glassmorphism)
+- ✅ User-selected Proposal 3: Floating Glassmorphism
+- ✅ Modern UX with transparent backgrounds and blur effects
+- ✅ Mobile-first responsive approach
 
 ---
 
