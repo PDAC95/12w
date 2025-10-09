@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     SUPABASE_URL: str
     SUPABASE_ANON_KEY: str
     SUPABASE_SERVICE_KEY: str
+    SUPABASE_JWT_SECRET: str
     DATABASE_URL: str
 
     # JWT
@@ -39,7 +40,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379"
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file="../../.env",
         env_file_encoding="utf-8",
         case_sensitive=True,
         extra="ignore"
