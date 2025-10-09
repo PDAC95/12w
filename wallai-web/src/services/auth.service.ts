@@ -39,7 +39,7 @@ export class AuthService {
       }
 
       // Step 2: User profile will be created automatically by database trigger
-      // The trigger listens to auth.users inserts and creates a row in public.users
+      // The trigger listens to auth.users inserts and creates a row in public.user_profiles
 
       // Step 3: Return user data
       // Note: Email confirmation may be required before user can sign in
@@ -86,9 +86,9 @@ export class AuthService {
         } as AuthError;
       }
 
-      // Fetch full user profile from public.users
+      // Fetch full user profile from public.user_profiles
       const { data: profile, error: profileError } = await supabase
-        .from('users')
+        .from('user_profiles')
         .select('*')
         .eq('id', authData.user.id)
         .single();
@@ -149,7 +149,7 @@ export class AuthService {
 
     // Fetch full profile
     const { data: profile } = await supabase
-      .from('users')
+      .from('user_profiles')
       .select('*')
       .eq('id', user.id)
       .single();
@@ -181,7 +181,7 @@ export class AuthService {
   static async isUsernameAvailable(username: string): Promise<boolean> {
     try {
       const { data, error } = await supabase
-        .from('users')
+        .from('user_profiles')
         .select('username')
         .eq('username', username)
         .maybeSingle();

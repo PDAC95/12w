@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormValues } from '../../../lib/validations/auth.validation';
 import { AuthService } from '../../../services/auth.service';
 import type { AuthError } from '../../../types/auth.types';
+import { SocialLoginButtons } from './SocialLoginButtons';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -177,6 +178,12 @@ export function RegisterForm({ onSuccess, onLoginClick }: RegisterFormProps) {
           Join thousands managing their finances smarter
         </p>
       </div>
+
+      {/* Social Login Buttons */}
+      <SocialLoginButtons
+        onError={setServerError}
+        disabled={isLoading}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Email Field */}
