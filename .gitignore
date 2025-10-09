@@ -71,3 +71,35 @@ htmlcov/
 # Lock files (keep package-lock.json)
 # yarn.lock
 # pnpm-lock.yaml
+
+# Claude settings (local only)
+.claude/settings.local.json
+
+# MCP configuration (local only)
+.mcp.json
+
+# Test files (temporary)
+apps/api/test_*.py
+apps/api/check_*.py
+apps/api/debug_*.py
+apps/api/cleanup_*.py
+apps/api/refresh_*.py
+apps/api/reload_*.py
+testusers.txt
+
+# Database migration helpers (temporary)
+database/migrations/CHECK_*.sql
+database/migrations/CLEANUP_*.sql
+database/migrations/DIAGNOSE.sql
+database/migrations/EXECUTE_*.sql
+database/migrations/FIX_*.sql
+database/migrations/MIGRATION_*.txt
+database/migrations/PRE_*.sql
+database/migrations/ROLLBACK_*.sql
+database/migrations/SIMPLE_*.sql
+database/migrations/TEST_*.sql
+database/migrations/VERIFY_*.sql
+database/migrations/backup/
+
+# Implementation reports (keep in repo but ignore temp versions)
+apps/api/*_REPORT_*.md
