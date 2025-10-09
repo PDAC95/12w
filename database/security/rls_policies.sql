@@ -18,7 +18,7 @@
 -- ENABLE RLS ON ALL TABLES
 -- =====================================================
 
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE spaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE space_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE budgets ENABLE ROW LEVEL SECURITY;
@@ -29,23 +29,23 @@ ALTER TABLE ai_conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE financial_insights ENABLE ROW LEVEL SECURITY;
 
 -- =====================================================
--- USERS TABLE POLICIES
+-- USER_PROFILES TABLE POLICIES
 -- =====================================================
 
 -- Users can view their own profile
 CREATE POLICY "Users can view own profile"
-ON users FOR SELECT
+ON user_profiles FOR SELECT
 USING (auth.uid() = id);
 
 -- Users can update their own profile
 CREATE POLICY "Users can update own profile"
-ON users FOR UPDATE
+ON user_profiles FOR UPDATE
 USING (auth.uid() = id);
 
 -- Users are created via trigger (no direct INSERT)
 -- Service role can insert for admin tasks
-CREATE POLICY "Service role can insert users"
-ON users FOR INSERT
+CREATE POLICY "Service role can insert user profiles"
+ON user_profiles FOR INSERT
 WITH CHECK (auth.jwt()->>'role' = 'service_role');
 
 -- =====================================================
