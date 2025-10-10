@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   EllipsisVerticalIcon,
   CubeIcon,
@@ -8,11 +9,32 @@ import {
   ChartBarSquareIcon,
   Cog6ToothIcon,
   KeyIcon,
+  FlagIcon,
+  CheckIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
+import CreateSpaceModal from '@/features/spaces/CreateSpaceModal';
+import SpaceCreatedModal from '@/features/spaces/SpaceCreatedModal';
+import { spaceService } from '@/services/space.service';
+import { useSpaceStore } from '@/stores/spaceStore';
+import type { Space } from '@/types/Space.types';
 
 const SidebarMenu: React.FC = () => {
+  const navigate = useNavigate();
+  const { activeSpace, recentSpaces, setActiveSpace } = useSpaceStore();
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [createdSpaceName, setCreatedSpaceName] = useState('');
+  const [createdInviteCode, setCreatedInviteCode] = useState('');
+  const [allSpaces, setAllSpaces] = useState<Space[]>([]);
+  const [isLoadingSpaces, setIsLoadingSpaces] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Load spaces on mount
+  useEffect(() => {
+    loadSpaces();
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -31,6 +53,23 @@ const SidebarMenu: React.FC = () => {
     };
   }, [isOpen]);
 
+  const loadSpaces = async () => {
+    setIsLoadingSpaces(true);
+    try {
+      const spaces = await spaceService.listSpaces();
+      setAllSpaces(spaces);
+
+      // Set first space as active if none is set
+      if (!activeSpace && spaces.length > 0) {
+        setActiveSpace(spaces[0]);
+      }
+    } catch (error) {
+      console.error('Failed to load spaces:', error);
+    } finally {
+      setIsLoadingSpaces(false);
+    }
+  };
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -40,10 +79,53 @@ const SidebarMenu: React.FC = () => {
   };
 
   const handleCreateSpace = () => {
-    // TODO: Implement create space modal
-    console.log('Create new space');
+    setIsCreateModalOpen(true);
     closeDropdown();
   };
+
+  const handleCreateSuccess = (spaceId: string, inviteCode: string, spaceName: string) => {
+    setCreatedSpaceName(spaceName);
+    setCreatedInviteCode(inviteCode);
+    setIsSuccessModalOpen(true);
+    loadSpaces(); // Reload spaces list
+  };
+
+  const handleSpaceSwitch = (space: Space) => {
+    setActiveSpace(space);
+    closeDropdown();
+    // Optional: refresh page or trigger data reload for new space
+    // window.location.reload(); // or navigate to dashboard
+  };
+
+  const getSpaceIcon = (spaceType: string) => {
+    switch (spaceType) {
+      case 'personal':
+        return CubeIcon;
+      case 'shared':
+        return UserGroupIcon;
+      case 'project':
+        return FlagIcon;
+      default:
+        return CubeIcon;
+    }
+  };
+
+  // Get top 3 spaces for quick switch (excluding active)
+  // Prioritize recent spaces, then fill with all available spaces
+  const quickSwitchSpaces = React.useMemo(() => {
+    const otherSpaces = allSpaces.filter((space) => space.id !== activeSpace?.id);
+
+    // Start with recent spaces (excluding active)
+    const recentOthers = recentSpaces.filter((space) => space.id !== activeSpace?.id);
+
+    // Add remaining spaces that aren't in recent
+    const remaining = otherSpaces.filter(
+      (space) => !recentOthers.find((r) => r.id === space.id)
+    );
+
+    // Combine and limit to 3
+    return [...recentOthers, ...remaining].slice(0, 3);
+  }, [allSpaces, recentSpaces, activeSpace]);
 
   const handleJoinSpace = () => {
     // TODO: Implement join space modal
@@ -52,8 +134,7 @@ const SidebarMenu: React.FC = () => {
   };
 
   const handleViewAllSpaces = () => {
-    // TODO: Navigate to spaces list
-    console.log('View all spaces');
+    navigate('/spaces');
     closeDropdown();
   };
 
@@ -83,13 +164,60 @@ const SidebarMenu: React.FC = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute left-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50">
-          {/* Current Space Selector */}
+          {/* Current Active Space */}
           <div className="px-4 py-3 border-b border-gray-100">
-            <div className="flex items-center space-x-3 px-3 py-2.5 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-lg border border-primary-100">
-              <CubeIcon className="h-5 w-5 text-primary-500" />
-              <span className="text-sm font-semibold text-gray-900">Personal Space</span>
-            </div>
-            {/* TODO: When multiple spaces are implemented, clicking will show a list of spaces here */}
+            <p className="px-1 text-xs font-medium text-gray-500 uppercase mb-2">
+              Current Space
+            </p>
+            {isLoadingSpaces ? (
+              <div className="flex items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
+              </div>
+            ) : activeSpace ? (
+              <div className="flex items-center justify-between px-3 py-2.5 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-lg border border-primary-100">
+                <div className="flex items-center space-x-3">
+                  {React.createElement(getSpaceIcon(activeSpace.space_type), {
+                    className: 'h-5 w-5 text-primary-500',
+                  })}
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{activeSpace.name}</p>
+                    <p className="text-xs text-gray-500 capitalize">{activeSpace.space_type}</p>
+                  </div>
+                </div>
+                <CheckIcon className="h-4 w-4 text-primary-500" />
+              </div>
+            ) : (
+              <div className="text-center py-3 text-sm text-gray-500">
+                No space selected
+              </div>
+            )}
+
+            {/* Quick Switch - Recent Spaces */}
+            {quickSwitchSpaces.length > 0 && (
+              <div className="mt-3 space-y-1">
+                <p className="px-1 text-xs font-medium text-gray-500 mb-2">
+                  Switch to
+                </p>
+                {quickSwitchSpaces.map((space) => (
+                  <button
+                    key={space.id}
+                    onClick={() => handleSpaceSwitch(space)}
+                    className="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group"
+                  >
+                    <div className="flex items-center space-x-3">
+                      {React.createElement(getSpaceIcon(space.space_type), {
+                        className: 'h-4 w-4 text-gray-500 group-hover:text-primary-500',
+                      })}
+                      <div className="text-left">
+                        <p className="text-sm font-medium">{space.name}</p>
+                        <p className="text-xs text-gray-500 capitalize">{space.space_type}</p>
+                      </div>
+                    </div>
+                    <ChevronRightIcon className="h-4 w-4 text-gray-400 group-hover:text-primary-500" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Space Management Actions */}
@@ -170,6 +298,21 @@ const SidebarMenu: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Create Space Modal */}
+      <CreateSpaceModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleCreateSuccess}
+      />
+
+      {/* Success Modal */}
+      <SpaceCreatedModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        spaceName={createdSpaceName}
+        inviteCode={createdInviteCode}
+      />
     </div>
   );
 };

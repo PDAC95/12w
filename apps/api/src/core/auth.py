@@ -63,6 +63,58 @@ async def get_current_user_id(
         )
 
 
+async def get_current_user(
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]
+) -> dict:
+    """
+    Extract and validate user from JWT token
+    Returns full user dict with id and email
+
+    Args:
+        credentials: Bearer token from Authorization header
+
+    Returns:
+        User dict with id, email, etc.
+
+    Raises:
+        HTTPException: If token is invalid or missing
+    """
+    token = credentials.credentials
+
+    try:
+        # Decode JWT token using Supabase JWT secret
+        payload = jwt.decode(
+            token,
+            settings.SUPABASE_JWT_SECRET,
+            algorithms=["HS256"],
+            audience="authenticated"
+        )
+
+        # Extract user info from token
+        user_id: str = payload.get("sub")
+        email: str = payload.get("email")
+
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        return {
+            "id": user_id,
+            "email": email,
+            **payload  # Include all other claims
+        }
+
+    except JWTError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Could not validate credentials: {str(e)}",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
 async def get_current_user_optional(
     credentials: HTTPAuthorizationCredentials | None = Depends(security)
 ) -> str | None:

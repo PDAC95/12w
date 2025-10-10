@@ -1,5 +1,8 @@
 # Wallai - AI-Powered Personal Finance Platform 🚀
 
+venv\Scripts\activate
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+
 > Your intelligent financial assistant powered by Anthropic Claude
 
 [![Turborepo](https://img.shields.io/badge/built%20with-Turborepo-blueviolet)](https://turbo.build)
@@ -97,16 +100,19 @@ This will start both frontend (port 3000) and backend (port 8000) simultaneously
 #### Starting the Frontend (React + Vite)
 
 1. **Open a terminal** and navigate to the web app directory:
+
    ```bash
    cd apps/wallai-web
    ```
 
 2. **Install dependencies** (if not done already):
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**:
+
    ```bash
    npm run dev
    ```
@@ -124,6 +130,7 @@ This will start both frontend (port 3000) and backend (port 8000) simultaneously
 #### Starting the Backend (FastAPI)
 
 1. **Open a NEW terminal** and navigate to the API directory:
+
    ```bash
    cd apps/api
    ```
@@ -131,16 +138,19 @@ This will start both frontend (port 3000) and backend (port 8000) simultaneously
 2. **Activate the Python virtual environment**:
 
    **Windows:**
+
    ```bash
    venv\Scripts\activate
    ```
 
    **Linux/Mac:**
+
    ```bash
    source venv/bin/activate
    ```
 
 3. **Install dependencies** (if not done already):
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -150,6 +160,7 @@ This will start both frontend (port 3000) and backend (port 8000) simultaneously
    - Or copy from root: `cp ../../.env .env`
 
 5. **Start the FastAPI server**:
+
    ```bash
    uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
    ```
@@ -178,6 +189,7 @@ npm run dev
 #### Port Already in Use
 
 **Frontend (3000):**
+
 ```bash
 # Windows
 netstat -ano | findstr :3000
@@ -188,6 +200,7 @@ lsof -ti:3000 | xargs kill -9
 ```
 
 **Backend (8000):**
+
 ```bash
 # Windows
 netstat -ano | findstr :8000
@@ -263,6 +276,7 @@ Follow the complete guide in `docs/SUPABASE_SETUP.md`
 ## 🏗️ Tech Stack
 
 ### Frontend (wallai-web)
+
 - **Framework:** React 18 + TypeScript
 - **Build:** Vite
 - **Styling:** Tailwind CSS 4
@@ -272,6 +286,7 @@ Follow the complete guide in `docs/SUPABASE_SETUP.md`
 - **Auth:** Supabase Auth
 
 ### Backend (api)
+
 - **Framework:** FastAPI
 - **Language:** Python 3.11+
 - **Database:** PostgreSQL (Supabase)
@@ -281,6 +296,7 @@ Follow the complete guide in `docs/SUPABASE_SETUP.md`
 - **Cache:** Redis (optional)
 
 ### Database
+
 - **Primary:** PostgreSQL 15+ (Supabase)
 - **Migrations:** SQL scripts
 - **Security:** Row Level Security (RLS)
@@ -304,6 +320,7 @@ Follow the complete guide in `docs/SUPABASE_SETUP.md`
 - **Target MVP:** 2025-11-28 (8 weeks)
 
 ### Completed ✅
+
 - ✅ Project documentation suite
 - ✅ Supabase configuration
 - ✅ Frontend React setup (Vite + TypeScript)
@@ -312,6 +329,7 @@ Follow the complete guide in `docs/SUPABASE_SETUP.md`
 - ✅ User registration with modern UI
 
 ### In Progress 🚧
+
 - 🚧 User login system
 - 🚧 Protected routes
 - 🚧 Dashboard MVP

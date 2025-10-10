@@ -1,14 +1,27 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RegisterPage, LoginPage, ForgotPasswordPage } from './features/auth';
 import { Dashboard, AuthCallback } from './pages';
 import { Chat } from './pages/Chat';
+import Spaces from './pages/Spaces';
 import { WelcomePage, SpaceSetupPage, BudgetExpressPage } from './pages/onboarding';
 import { Logo } from './components/common';
 import { PrivateRoute } from './components/routes';
 import { MainLayout } from './components/layout';
 import { useAuthStore } from './stores/authStore';
 import { OnboardingProvider } from './context/OnboardingContext';
+
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 /**
  * Landing Page Component
@@ -75,9 +88,10 @@ function App() {
   }, [initialize]);
 
   return (
-    <BrowserRouter>
-      <OnboardingProvider>
-        <Routes>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <OnboardingProvider>
+          <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -119,16 +133,17 @@ function App() {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/spaces" element={<div className="text-center py-12 text-gray-500">Spaces page coming soon</div>} />
+            <Route path="/spaces" element={<Spaces />} />
             <Route path="/budgets" element={<div className="text-center py-12 text-gray-500">Budgets page coming soon</div>} />
             <Route path="/expenses" element={<div className="text-center py-12 text-gray-500">Expenses page coming soon</div>} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/reports" element={<div className="text-center py-12 text-gray-500">Reports page coming soon</div>} />
             <Route path="/settings" element={<div className="text-center py-12 text-gray-500">Settings page coming soon</div>} />
           </Route>
-        </Routes>
-      </OnboardingProvider>
-    </BrowserRouter>
+          </Routes>
+        </OnboardingProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
