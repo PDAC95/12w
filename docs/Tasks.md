@@ -1402,32 +1402,73 @@
 
 **Como** usuario con múltiples espacios, **quiero** cambiar entre ellos, **para** ver diferentes presupuestos.
 
-**Status:** 🔮 **FUTURO - SPRINT 2+**
+**Status:** ✅ **COMPLETADO** [2025-10-10]
 
 **Criterios de Aceptación:**
 
-- DADO que pertenezco a 2+ espacios
-- CUANDO selecciono uno diferente
-- ENTONCES toda la UI se actualiza con datos del nuevo espacio
-- Y se recuerda mi última selección
+- ✅ DADO que pertenezco a 2+ espacios
+- ✅ CUANDO selecciono uno diferente
+- ✅ ENTONCES toda la UI se actualiza con datos del nuevo espacio
+- ✅ Y se recuerda mi última selección
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: SpaceSelector funcional completo
-- [ ] Frontend: actualizar currentSpaceId en Zustand
-- [ ] Frontend: refrescar queries al cambiar espacio
-- [ ] Backend: filtrar todos los endpoints por space_id
+- [x] Frontend: SpaceSelector funcional completo (implementado en US-011)
+- [x] Frontend: actualizar currentSpaceId en Zustand (spaceStore con setActiveSpace)
+- [x] Frontend: refrescar queries al cambiar espacio (implementado en SidebarMenu)
+- [x] Backend: filtrar todos los endpoints por space_id (ya existía desde US-011)
 
 **DoD:**
 
-- [ ] Cambio instantáneo de contexto
-- [ ] Datos correctos por espacio
-- [ ] Última selección persistida
+- [x] Cambio instantáneo de contexto
+- [x] Datos correctos por espacio
+- [x] Última selección persistida (localStorage)
 
-**Story Points:** 2
+**Características Implementadas:**
+
+**Quick Switch en SidebarMenu:**
+- Muestra espacio activo actual con checkmark verde
+- Lista 2-3 espacios disponibles para cambio rápido
+- Click en espacio lo activa inmediatamente
+- Navegación automática al dashboard del nuevo espacio
+- Persistencia del espacio activo en localStorage
+
+**Space Store (Zustand):**
+- `activeSpace`: Espacio actualmente seleccionado
+- `recentSpaces`: Lista de espacios usados recientemente (max 5)
+- `setActiveSpace()`: Cambia espacio activo y actualiza recientes
+- `loadSpaces()`: Recarga lista completa de espacios del usuario
+- Persistencia automática con middleware de Zustand
+
+**Spaces Page:**
+- Cards horizontales compactas con todos los espacios
+- Click en cualquier espacio lo activa
+- Navegación automática al dashboard
+- Indicador visual del espacio activo
+
+**SidebarMenu Integration:**
+- Quick switch dropdown con espacios disponibles
+- Opción "View All Spaces" para gestión completa
+- Indicador de espacio activo con checkmark
+- Smooth transitions y hover effects
+
+**Deliverables:**
+
+**Ya implementado en US-011:**
+- wallai-web/src/stores/spaceStore.ts (Zustand store completo)
+- wallai-web/src/components/layout/SidebarMenu.tsx (quick switch funcional)
+- wallai-web/src/pages/Spaces.tsx (listado con activación por click)
+- wallai-web/src/services/space.service.ts (getUserSpaces, etc.)
+- Backend: Todos los endpoints ya filtran por space_id desde US-011
+
+**Total:** Funcionalidad completa ya implementada en US-011, solo requería documentación
+
+**Story Points:** 2 (completados - sin trabajo adicional requerido)
 **Prioridad:** P1
-**Sprint:** 2+
+**Sprint:** Sprint 2 (marcado como completo retroactivamente)
 **Asignado a:** Frontend
+**Completado:** 2025-10-10 (ya estaba implementado)
+**Tiempo:** 0 minutos (funcionalidad ya existía desde US-011)
 
 ---
 
