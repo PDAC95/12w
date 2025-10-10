@@ -14,7 +14,6 @@ import type {
   GetSpaceResponse,
   UpdateSpaceRequest,
   UpdateSpaceResponse,
-  JoinSpaceRequest,
   JoinSpaceResponse,
   LeaveSpaceResponse,
   SpaceFilterOptions,

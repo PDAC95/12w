@@ -7,18 +7,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  CubeIcon,
-  UserGroupIcon,
-  FlagIcon,
   PlusCircleIcon,
   ArrowRightIcon,
   UserIcon,
+  ShareIcon,
+  TrashIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
+import {
+  CubeIcon,
+  UserGroupIcon,
+  FlagIcon,
+} from '@heroicons/react/24/solid';
 import { spaceService } from '@/services/space.service';
 import { useSpaceStore } from '@/stores/spaceStore';
 import type { Space } from '@/types/Space.types';
 import CreateSpaceModal from '@/features/spaces/CreateSpaceModal';
 import SpaceCreatedModal from '@/features/spaces/SpaceCreatedModal';
+import ViewInviteCodeModal from '@/features/spaces/ViewInviteCodeModal';
+import DeleteSpaceModal from '@/features/spaces/DeleteSpaceModal';
+import ManageMembersModal from '@/features/spaces/ManageMembersModal';
 
 const Spaces: React.FC = () => {
   const navigate = useNavigate();
@@ -28,8 +36,12 @@ const Spaces: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isViewCodeModalOpen, setIsViewCodeModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isManageMembersModalOpen, setIsManageMembersModalOpen] = useState(false);
   const [createdSpaceName, setCreatedSpaceName] = useState('');
   const [createdInviteCode, setCreatedInviteCode] = useState('');
+  const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
 
   useEffect(() => {
     loadSpaces();
@@ -49,7 +61,7 @@ const Spaces: React.FC = () => {
     }
   };
 
-  const handleCreateSuccess = (spaceId: string, inviteCode: string, spaceName: string) => {
+  const handleCreateSuccess = (_spaceId: string, inviteCode: string, spaceName: string) => {
     setCreatedSpaceName(spaceName);
     setCreatedInviteCode(inviteCode);
     setIsSuccessModalOpen(true);
@@ -60,6 +72,32 @@ const Spaces: React.FC = () => {
     // Set as active space and navigate to dashboard
     setActiveSpace(space);
     navigate('/dashboard');
+  };
+
+  const handleViewInviteCode = (e: React.MouseEvent, space: Space) => {
+    e.stopPropagation(); // Prevent card click
+    setSelectedSpace(space);
+    setIsViewCodeModalOpen(true);
+  };
+
+  const handleDeleteSpace = (e: React.MouseEvent, space: Space) => {
+    e.stopPropagation(); // Prevent card click
+    setSelectedSpace(space);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleManageMembers = (e: React.MouseEvent, space: Space) => {
+    e.stopPropagation(); // Prevent card click
+    setSelectedSpace(space);
+    setIsManageMembersModalOpen(true);
+  };
+
+  const handleDeleteSuccess = () => {
+    loadSpaces(); // Reload spaces list
+  };
+
+  const handleMemberRemoved = () => {
+    loadSpaces(); // Reload spaces list
   };
 
   const getSpaceIcon = (spaceType: string) => {
@@ -78,13 +116,13 @@ const Spaces: React.FC = () => {
   const getSpaceColor = (spaceType: string) => {
     switch (spaceType) {
       case 'personal':
-        return 'from-blue-500 to-indigo-600';
+        return 'text-blue-500';
       case 'shared':
-        return 'from-primary-500 to-secondary-500';
+        return 'text-primary-500';
       case 'project':
-        return 'from-purple-500 to-pink-600';
+        return 'text-purple-500';
       default:
-        return 'from-gray-500 to-gray-600';
+        return 'text-gray-500';
     }
   };
 
@@ -166,8 +204,8 @@ const Spaces: React.FC = () => {
                 >
                   <div className="flex items-center gap-4">
                     {/* Icon */}
-                    <div className={`flex-shrink-0 p-3 rounded-lg bg-gradient-to-br ${getSpaceColor(space.space_type)} bg-opacity-10`}>
-                      <SpaceIcon className="h-5 w-5 text-gray-700" />
+                    <div className="flex-shrink-0 p-3">
+                      <SpaceIcon className={`h-6 w-6 ${getSpaceColor(space.space_type)}`} />
                     </div>
 
                     {/* Content */}
@@ -177,6 +215,11 @@ const Spaces: React.FC = () => {
                         <span className="flex-shrink-0 px-2 py-0.5 bg-gray-100 rounded text-xs font-medium text-gray-600 capitalize">
                           {getSpaceTypeLabel(space.space_type)}
                         </span>
+                        {space.user_role === 'owner' && (
+                          <span className="flex-shrink-0 px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs font-medium">
+                            Owner
+                          </span>
+                        )}
                       </div>
 
                       {/* Info row */}
@@ -195,8 +238,45 @@ const Spaces: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Arrow */}
-                    <div className="flex-shrink-0">
+                    {/* Actions */}
+                    <div className="flex-shrink-0 flex items-center gap-2">
+                      {/* Manage Members - for owners and admins */}
+                      {(space.user_role === 'owner' || space.user_role === 'admin') && (
+                        <button
+                          onClick={(e) => handleManageMembers(e, space)}
+                          className="p-2 text-blue-600 hover:text-blue-700 transition-colors"
+                          title="Manage members"
+                          aria-label="Manage members"
+                        >
+                          <Cog6ToothIcon className="h-5 w-5" />
+                        </button>
+                      )}
+
+                      {/* Share button - only for owners */}
+                      {space.user_role === 'owner' && (
+                        <button
+                          onClick={(e) => handleViewInviteCode(e, space)}
+                          className="p-2 text-primary-600 hover:text-primary-700 transition-colors"
+                          title="View invite code"
+                          aria-label="Share space"
+                        >
+                          <ShareIcon className="h-5 w-5" />
+                        </button>
+                      )}
+
+                      {/* Delete button - only for owners */}
+                      {space.user_role === 'owner' && (
+                        <button
+                          onClick={(e) => handleDeleteSpace(e, space)}
+                          className="p-2 text-red-600 hover:text-red-700 transition-colors"
+                          title="Delete space"
+                          aria-label="Delete space"
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      )}
+
+                      {/* Arrow */}
                       <ArrowRightIcon className="h-5 w-5 text-gray-300 group-hover:text-primary-500 transition-colors" />
                     </div>
                   </div>
@@ -219,6 +299,35 @@ const Spaces: React.FC = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         spaceName={createdSpaceName}
         inviteCode={createdInviteCode}
+      />
+
+      <ViewInviteCodeModal
+        isOpen={isViewCodeModalOpen}
+        onClose={() => {
+          setIsViewCodeModalOpen(false);
+          setSelectedSpace(null);
+        }}
+        space={selectedSpace}
+      />
+
+      <DeleteSpaceModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedSpace(null);
+        }}
+        space={selectedSpace}
+        onSuccess={handleDeleteSuccess}
+      />
+
+      <ManageMembersModal
+        isOpen={isManageMembersModalOpen}
+        onClose={() => {
+          setIsManageMembersModalOpen(false);
+          setSelectedSpace(null);
+        }}
+        space={selectedSpace}
+        onMemberRemoved={handleMemberRemoved}
       />
     </div>
   );

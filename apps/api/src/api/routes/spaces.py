@@ -575,3 +575,138 @@ async def regenerate_invite_code(
                 }
             }
         )
+
+
+# ============================================
+# GET /api/spaces/{space_id}/members
+# ============================================
+
+@router.get(
+    "/spaces/{space_id}/members",
+    response_model=GetSpaceMembersResponse,
+    summary="Get Space Members",
+    description="Get all members of a space"
+)
+async def get_space_members(
+    space_id: str,
+    user_id: Annotated[str, Depends(get_current_user_id)]
+):
+    """
+    Get all members of a space
+
+    Args:
+        space_id: Space UUID
+
+    Returns:
+        List of space members with user info
+    """
+    try:
+        supabase = get_supabase_client()
+        service = SpaceService(supabase)
+
+        members = await service.get_space_members(
+            space_id=space_id,
+            user_id=user_id
+        )
+
+        return GetSpaceMembersResponse(
+            success=True,
+            data={"members": members}
+        )
+
+    except ValueError as e:
+        # Permission error
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "success": False,
+                "error": {
+                    "code": "PERMISSION_DENIED",
+                    "message": str(e),
+                    "details": {}
+                }
+            }
+        )
+
+    except Exception as e:
+        logger.error(f"Error getting members for space {space_id}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "success": False,
+                "error": {
+                    "code": "GET_MEMBERS_FAILED",
+                    "message": "Failed to get space members",
+                    "details": {"error": str(e)}
+                }
+            }
+        )
+
+
+# ============================================
+# DELETE /api/spaces/{space_id}/members/{member_user_id}
+# ============================================
+
+@router.delete(
+    "/spaces/{space_id}/members/{member_user_id}",
+    response_model=RemoveMemberResponse,
+    summary="Remove Member",
+    description="Remove member from space (requires admin or owner role)"
+)
+async def remove_member(
+    space_id: str,
+    member_user_id: str,
+    user_id: Annotated[str, Depends(get_current_user_id)]
+):
+    """
+    Remove member from space
+
+    Args:
+        space_id: Space UUID
+        member_user_id: User ID to remove
+
+    Returns:
+        Success response
+    """
+    try:
+        supabase = get_supabase_client()
+        service = SpaceService(supabase)
+
+        await service.remove_member(
+            space_id=space_id,
+            member_user_id=member_user_id,
+            requesting_user_id=user_id
+        )
+
+        return RemoveMemberResponse(
+            success=True,
+            data={"message": "Member removed successfully"}
+        )
+
+    except ValueError as e:
+        # Permission error or validation error
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "success": False,
+                "error": {
+                    "code": "PERMISSION_DENIED",
+                    "message": str(e),
+                    "details": {}
+                }
+            }
+        )
+
+    except Exception as e:
+        logger.error(f"Error removing member from space {space_id}: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "success": False,
+                "error": {
+                    "code": "REMOVE_MEMBER_FAILED",
+                    "message": "Failed to remove member",
+                    "details": {"error": str(e)}
+                }
+            }
+        )

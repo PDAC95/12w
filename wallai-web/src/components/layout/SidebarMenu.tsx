@@ -15,6 +15,8 @@ import {
 } from '@heroicons/react/24/outline';
 import CreateSpaceModal from '@/features/spaces/CreateSpaceModal';
 import SpaceCreatedModal from '@/features/spaces/SpaceCreatedModal';
+import JoinSpaceModal from '@/features/spaces/JoinSpaceModal';
+import JoinSpaceSuccessModal from '@/features/spaces/JoinSpaceSuccessModal';
 import { spaceService } from '@/services/space.service';
 import { useSpaceStore } from '@/stores/spaceStore';
 import type { Space } from '@/types/Space.types';
@@ -29,6 +31,9 @@ const SidebarMenu: React.FC = () => {
   const [createdInviteCode, setCreatedInviteCode] = useState('');
   const [allSpaces, setAllSpaces] = useState<Space[]>([]);
   const [isLoadingSpaces, setIsLoadingSpaces] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [isJoinSuccessModalOpen, setIsJoinSuccessModalOpen] = useState(false);
+  const [joinedSpace, setJoinedSpace] = useState<Space | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Load spaces on mount
@@ -90,6 +95,12 @@ const SidebarMenu: React.FC = () => {
     loadSpaces(); // Reload spaces list
   };
 
+  const handleJoinSuccess = (space: Space) => {
+    setJoinedSpace(space);
+    setIsJoinSuccessModalOpen(true);
+    loadSpaces(); // Reload spaces list
+  };
+
   const handleSpaceSwitch = (space: Space) => {
     setActiveSpace(space);
     closeDropdown();
@@ -128,8 +139,7 @@ const SidebarMenu: React.FC = () => {
   }, [allSpaces, recentSpaces, activeSpace]);
 
   const handleJoinSpace = () => {
-    // TODO: Implement join space modal
-    console.log('Join space with code');
+    setIsJoinModalOpen(true);
     closeDropdown();
   };
 
@@ -312,6 +322,23 @@ const SidebarMenu: React.FC = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         spaceName={createdSpaceName}
         inviteCode={createdInviteCode}
+      />
+
+      {/* Join Space Modal */}
+      <JoinSpaceModal
+        isOpen={isJoinModalOpen}
+        onClose={() => setIsJoinModalOpen(false)}
+        onSuccess={handleJoinSuccess}
+      />
+
+      {/* Join Success Modal */}
+      <JoinSpaceSuccessModal
+        isOpen={isJoinSuccessModalOpen}
+        onClose={() => {
+          setIsJoinSuccessModalOpen(false);
+          setJoinedSpace(null);
+        }}
+        space={joinedSpace}
       />
     </div>
   );

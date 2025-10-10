@@ -1150,31 +1150,127 @@
 
 **Como** usuario con espacio personal, **quiero** crear espacios adicionales, **para** gestionar finanzas separadas o compartidas.
 
-**Status:** 🔮 **FUTURO - SPRINT 2+**
+**Status:** ✅ **COMPLETADO** [2025-10-10]
 
 **Criterios de Aceptación:**
 
-- DADO que ya tengo mi espacio personal
-- CUANDO creo un nuevo espacio
-- ENTONCES puedo elegir nombre, moneda y tipo (compartido/proyecto)
-- Y se genera código de invitación único
+- ✅ DADO que ya tengo mi espacio personal
+- ✅ CUANDO creo un nuevo espacio
+- ✅ ENTONCES puedo elegir nombre, moneda y tipo (compartido/proyecto)
+- ✅ Y se genera código de invitación único
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: Modal de creación de espacio
-- [ ] Backend: Endpoint para múltiples espacios
-- [ ] Backend: Lógica de permisos y roles
+- [x] Frontend: Modal de creación de espacio (2-step wizard)
+- [x] Frontend: Página de listado de espacios (/spaces)
+- [x] Frontend: Sistema de space switching en menú
+- [x] Frontend: State management con Zustand + localStorage
+- [x] Backend: Endpoints CRUD para espacios (10 endpoints)
+- [x] Backend: Lógica de permisos y roles
+- [x] Backend: Sistema dinámico de currencies
+- [x] Database: Migration 005 - space_type column
+- [x] Database: Migration 006 - currencies table
 
 **DoD:**
 
-- [ ] Espacio creado visible en lista
-- [ ] Código de invitación copiable
-- [ ] Owner tiene permisos totales
+- [x] Espacio creado visible en lista
+- [x] Código de invitación copiable (6 caracteres)
+- [x] Owner tiene permisos totales
+- [x] Modal con diseño mobile-first y UX moderno
+- [x] Sistema de currency dinámico desde DB
+- [x] Quick switch entre espacios en menú (2-3 espacios)
+- [x] Active space persistido en localStorage
+- [x] Cards de espacios con diseño horizontal compacto
+- [x] Click en espacio lo activa y navega a dashboard
 
-**Story Points:** 3
+**Características Implementadas:**
+
+**Database Layer:**
+- Columna space_type (personal/shared/project) en tabla spaces
+- Tabla currencies con USD, CAD, MXN pre-cargadas
+- Índices para optimización de consultas
+- Constraints y triggers para integridad de datos
+
+**Backend (FastAPI):**
+- 10 endpoints REST para gestión completa de espacios:
+  - GET /api/spaces - Listar espacios del usuario
+  - POST /api/spaces - Crear nuevo espacio
+  - GET /api/spaces/{id} - Obtener detalle de espacio
+  - PUT /api/spaces/{id} - Actualizar espacio
+  - DELETE /api/spaces/{id} - Eliminar espacio
+  - POST /api/spaces/join - Unirse con código de invitación
+  - POST /api/spaces/{id}/leave - Salir de espacio
+  - GET /api/spaces/{id}/members - Listar miembros
+  - POST /api/spaces/{id}/members - Agregar miembro
+  - DELETE /api/spaces/{id}/members/{user_id} - Remover miembro
+- Endpoints de currencies para sistema dinámico
+- Custom exceptions para mejor manejo de errores
+- Validación con Pydantic schemas
+- Lógica de permisos por rol (owner/member)
+
+**Frontend (React + TypeScript):**
+- CreateSpaceModal: Modal de 2 pasos con wizard
+  - Paso 1: Selección de tipo con cards visuales
+  - Paso 2: Formulario de detalles (nombre, descripción, currency)
+  - Smart dropdown positioning que evita colisión con navbar
+  - Carga dinámica de currencies desde API
+- SpaceCreatedModal: Confirmación con código de invitación
+- Spaces Page: Listado completo con cards horizontales compactos
+- SidebarMenu mejorado:
+  - Muestra espacio activo actual con checkmark
+  - Quick switch a 2-3 espacios más usados/disponibles
+  - Opciones de gestión (crear, unirse, ver todos, analytics, settings)
+- Space Store (Zustand): State management con persistencia
+- TypeScript types completos para type-safety
+- Servicios con axios para integración con API
+
+**Diseño UX/UI:**
+- Modal mobile-first centrado con offset de -15px
+- Glassmorphism effects en elementos de navegación
+- Dropdown con posicionamiento fijo e inteligente (abre arriba/abajo según espacio)
+- Cards horizontales compactas con toda la info en una fila
+- Iconos de Heroicons v2 para cada tipo de espacio
+- Transiciones suaves y hover effects
+- Responsive design para mobile y desktop
+
+**Deliverables:**
+
+**Database Migrations:**
+- database/migrations/005_add_space_type.sql
+- database/migrations/006_create_currencies_table.sql
+
+**Backend Files (13 archivos):**
+- apps/api/src/core/exceptions.py (nuevo)
+- apps/api/src/schemas/space.py (nuevo - 500 líneas)
+- apps/api/src/schemas/currency.py (nuevo)
+- apps/api/src/services/space_service.py (nuevo - 480 líneas)
+- apps/api/src/services/currency_service.py (nuevo)
+- apps/api/src/api/routes/spaces.py (nuevo - 420 líneas)
+- apps/api/src/api/routes/currencies.py (nuevo)
+- apps/api/src/main.py (modificado - registro de routers)
+
+**Frontend Files (21 archivos):**
+- wallai-web/src/types/Space.types.ts (nuevo - 170 líneas)
+- wallai-web/src/types/Currency.types.ts (nuevo)
+- wallai-web/src/services/space.service.ts (nuevo - 340 líneas)
+- wallai-web/src/services/currency.service.ts (nuevo)
+- wallai-web/src/stores/spaceStore.ts (nuevo)
+- wallai-web/src/features/spaces/CreateSpaceModal.tsx (nuevo - 450 líneas)
+- wallai-web/src/features/spaces/SpaceCreatedModal.tsx (nuevo)
+- wallai-web/src/features/spaces/InviteCodeDisplay.tsx (nuevo)
+- wallai-web/src/pages/Spaces.tsx (nuevo - 235 líneas)
+- wallai-web/src/components/layout/SidebarMenu.tsx (modificado extensivamente)
+- wallai-web/src/App.tsx (modificado - ruta /spaces)
+- wallai-web/src/features/dashboard/components/QuickStatsCard.tsx (modificado - fix icon)
+
+**Total:** 42 archivos (2 migrations, 8 backend, 11 frontend principales, 21 archivos de soporte)
+
+**Story Points:** 3 (completados)
 **Prioridad:** P1
-**Sprint:** 2+
+**Sprint:** Sprint 2+ (adelantado y completado)
 **Asignado a:** Full Stack
+**Completado:** 2025-10-10
+**Commit:** 6b93de0
 
 ---
 
@@ -1182,32 +1278,123 @@
 
 **Como** owner de espacio, **quiero** invitar a otros con un código, **para** compartir la gestión financiera.
 
-**Status:** 🔮 **FUTURO - SPRINT 2+**
+**Status:** ✅ **COMPLETADO** [2025-10-10]
 
 **Criterios de Aceptación:**
 
-- DADO que tengo un código de invitación válido
-- CUANDO lo ingreso en /join
-- ENTONCES soy añadido al espacio como member
-- Y veo el espacio en mi lista
+- ✅ DADO que tengo un código de invitación válido
+- ✅ CUANDO lo ingreso en /join
+- ✅ ENTONCES soy añadido al espacio como member
+- ✅ Y veo el espacio en mi lista
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: JoinSpaceForm para ingresar código
-- [ ] Backend: POST /api/spaces/join endpoint
-- [ ] Backend: validar código y límite de miembros (10)
-- [ ] DB: insertar en space_members con role="member"
+- [x] Frontend: JoinSpaceModal para ingresar código
+- [x] Frontend: JoinSpaceSuccessModal para confirmación
+- [x] Frontend: Integración con SidebarMenu
+- [x] Backend: POST /api/spaces/join endpoint (ya existía de US-011)
+- [x] Backend: validar código y límite de miembros (10) (ya existía)
+- [x] DB: insertar en space_members con role="member" (ya existía)
 
 **DoD:**
 
-- [ ] Join exitoso muestra espacio
-- [ ] Códigos inválidos muestran error claro
-- [ ] Límite de miembros respetado
+- [x] Join exitoso muestra espacio en success modal
+- [x] Navegación a Dashboard o Spaces después de unirse
+- [x] Códigos inválidos muestran error claro
+- [x] Límite de miembros respetado
+- [x] Validación frontend en tiempo real
+- [x] Conversión automática a mayúsculas
+- [x] Actualización de lista de espacios
+- [x] Integración con spaceStore (Zustand)
+- [x] Diseño glassmorphism consistente
 
-**Story Points:** 3
+**Características Implementadas:**
+
+**Frontend Components:**
+- JoinSpaceModal: Modal para ingresar código de invitación
+  - Input de 6 caracteres con validación en tiempo real
+  - Conversión automática a mayúsculas
+  - Validación formato alfanumérico
+  - Contador de caracteres (x/6)
+  - Estados: idle, validating, submitting, error
+  - Manejo de errores específicos por caso
+  - Info box con instrucciones para obtener código
+  - Diseño glassmorphism con backdrop blur
+
+- JoinSpaceSuccessModal: Modal de confirmación post-unión
+  - Icono de éxito con badge del tipo de espacio
+  - Tarjeta con detalles del espacio (nombre, tipo, miembros, moneda)
+  - Colores dinámicos según tipo (personal/shared/project)
+  - Info box "What's next?" con próximos pasos
+  - Botones: "Go to Dashboard" y "View All Spaces"
+  - Animaciones suaves scale-in
+
+**Integración con Sistema:**
+- Accesible desde menú de 3 puntos en SidebarMenu
+- Click "Join Space" abre JoinSpaceModal
+- Submit exitoso actualiza spaceStore
+- Establece nuevo espacio como activo
+- Recarga lista de espacios (loadSpaces)
+- Navega a dashboard o spaces según elección del usuario
+
+**Validaciones Frontend:**
+- Longitud exacta: 6 caracteres
+- Solo alfanuméricos: /^[A-Z0-9]{6}$/
+- Trim de espacios en blanco
+- Conversión a mayúsculas automática
+- Feedback visual en tiempo real
+
+**Manejo de Errores:**
+- 404 Not Found: "This invite code doesn't exist. Please check and try again."
+- 400 Already Member: "You're already a member of this space!"
+- 400 Space Full: "This space has reached its member limit."
+- Network errors: "Connection error. Please try again."
+- Validación formato: "Code must be 6 characters" / "Only letters and numbers allowed"
+
+**Backend (Ya implementado en US-011):**
+- Endpoint POST /api/spaces/join en spaces.py
+- Service method join_space() en space_service.py
+- Schemas: JoinSpaceRequest, JoinSpaceResponse
+- Validación de código (6 chars, case-insensitive)
+- Verificación de membresía existente
+- Respeto de límite de 10 miembros
+- Retorna espacio completo + membresía creada
+
+**Diseño UX/UI:**
+- Mobile-first responsive design
+- Glassmorphism effects (bg-white/95 backdrop-blur-md)
+- Modal centrado con offset -15px
+- Animaciones smooth (scale-in, transitions)
+- Colores brand (primary #4ADE80, secondary #14B8A6)
+- Input monospace tracking-[0.5em] para código
+- Estados hover y disabled bien definidos
+- Accesible (ARIA labels, keyboard navigation)
+
+**Deliverables:**
+
+**Frontend Files (2 componentes):**
+- wallai-web/src/features/spaces/JoinSpaceModal.tsx (248 líneas)
+- wallai-web/src/features/spaces/JoinSpaceSuccessModal.tsx (192 líneas)
+
+**Modified Files:**
+- wallai-web/src/components/layout/SidebarMenu.tsx (integración de modales)
+- wallai-web/src/features/spaces/index.ts (exports actualizados)
+
+**Total:** 2 archivos creados, 2 modificados (440+ líneas nuevas)
+
+**Testing:**
+- Flujo exitoso: código válido → success modal → navegación
+- Errores: código inválido, ya miembro, espacio lleno
+- Validaciones: formato, longitud, caracteres especiales
+- UI/UX: glassmorphism, animaciones, responsive
+- Integración: store update, navigation, list refresh
+
+**Story Points:** 3 (completados)
 **Prioridad:** P1
-**Sprint:** 2+
+**Sprint:** Sprint 2 (iniciado)
 **Asignado a:** Full Stack
+**Completado:** 2025-10-10
+**Tiempo:** 30 minutos (backend ya existía, solo frontend)
 
 ---
 

@@ -531,3 +531,160 @@ class SpaceService:
         except Exception as e:
             logger.error(f"Error regenerating invite code for space {space_id}: {str(e)}")
             raise
+
+    async def get_space_members(
+        self,
+        space_id: str,
+        user_id: str
+    ) -> list[Dict[str, Any]]:
+        """
+        Get all members of a space
+
+        Args:
+            space_id: Space UUID
+            user_id: Requesting user ID
+
+        Returns:
+            List of space members with user info
+
+        Raises:
+            ValueError: If user doesn't have permission
+        """
+        try:
+            # Verify user is member of the space
+            membership_response = self.supabase.table("space_members") \
+                .select("role, is_active") \
+                .eq("space_id", space_id) \
+                .eq("user_id", user_id) \
+                .eq("is_active", True) \
+                .execute()
+
+            if not membership_response.data:
+                raise ValueError("You are not a member of this space")
+
+            # Get all members with user info
+            members_response = self.supabase.table("space_members") \
+                .select("""
+                    id,
+                    space_id,
+                    user_id,
+                    role,
+                    is_active,
+                    joined_at,
+                    left_at,
+                    profiles:user_id (
+                        username,
+                        first_name,
+                        last_name,
+                        avatar_url
+                    )
+                """) \
+                .eq("space_id", space_id) \
+                .eq("is_active", True) \
+                .execute()
+
+            # Format response with user info
+            members = []
+            for member in members_response.data:
+                profile = member.get("profiles", {})
+                member_data = {
+                    "id": member["id"],
+                    "space_id": member["space_id"],
+                    "user_id": member["user_id"],
+                    "role": member["role"],
+                    "is_active": member["is_active"],
+                    "joined_at": member["joined_at"],
+                    "left_at": member.get("left_at"),
+                    "username": profile.get("username"),
+                    "full_name": f"{profile.get('first_name', '')} {profile.get('last_name', '')}".strip() or None,
+                    "avatar_url": profile.get("avatar_url")
+                }
+                members.append(member_data)
+
+            logger.info(f"Retrieved {len(members)} members for space {space_id}")
+            return members
+
+        except ValueError:
+            raise
+        except Exception as e:
+            logger.error(f"Error getting members for space {space_id}: {str(e)}")
+            raise
+
+    async def remove_member(
+        self,
+        space_id: str,
+        member_user_id: str,
+        requesting_user_id: str
+    ) -> None:
+        """
+        Remove member from space
+
+        Args:
+            space_id: Space UUID
+            member_user_id: User ID to remove
+            requesting_user_id: User ID making the request
+
+        Raises:
+            ValueError: If user doesn't have permission or invalid operation
+        """
+        try:
+            # Verify requesting user has permission (owner or admin)
+            requester_response = self.supabase.table("space_members") \
+                .select("role, is_active") \
+                .eq("space_id", space_id) \
+                .eq("user_id", requesting_user_id) \
+                .eq("is_active", True) \
+                .execute()
+
+            if not requester_response.data:
+                raise ValueError("You are not a member of this space")
+
+            requester_role = requester_response.data[0]["role"]
+            if requester_role not in ["owner", "admin"]:
+                raise ValueError("Only owners and admins can remove members")
+
+            # Cannot remove yourself
+            if member_user_id == requesting_user_id:
+                raise ValueError("You cannot remove yourself from the space. Use leave instead.")
+
+            # Get member to remove
+            member_response = self.supabase.table("space_members") \
+                .select("role, is_active") \
+                .eq("space_id", space_id) \
+                .eq("user_id", member_user_id) \
+                .eq("is_active", True) \
+                .execute()
+
+            if not member_response.data:
+                raise ValueError("Member not found in this space")
+
+            member_role = member_response.data[0]["role"]
+
+            # Cannot remove owner
+            if member_role == "owner":
+                raise ValueError("Cannot remove the space owner")
+
+            # Admin cannot remove another admin (only owner can)
+            if requester_role == "admin" and member_role == "admin":
+                raise ValueError("Admins cannot remove other admins")
+
+            # Soft delete - mark as inactive
+            update_response = self.supabase.table("space_members") \
+                .update({
+                    "is_active": False,
+                    "left_at": "now()"
+                }) \
+                .eq("space_id", space_id) \
+                .eq("user_id", member_user_id) \
+                .execute()
+
+            if not update_response.data:
+                raise ValueError("Failed to remove member")
+
+            logger.info(f"User {requesting_user_id} removed user {member_user_id} from space {space_id}")
+
+        except ValueError:
+            raise
+        except Exception as e:
+            logger.error(f"Error removing member from space {space_id}: {str(e)}")
+            raise
