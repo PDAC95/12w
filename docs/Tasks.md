@@ -1478,72 +1478,106 @@
 
 **Como** usuario con espacio, **quiero** gestión completa de presupuestos mensuales, **para** organizar mis finanzas detalladamente.
 
-**Status:** 🔮 **FUTURO - SPRINT 2+**
+**Status:** ✅ **COMPLETADO**
 
 **Criterios de Aceptación:**
 
-- DADO que estoy en un espacio sin presupuesto del mes actual
-- CUANDO creo un presupuesto con:
+- ✅ DADO que estoy en un espacio sin presupuesto del mes actual
+- ✅ CUANDO creo un presupuesto con:
   - Nombre descriptivo
   - Mes/año seleccionado
   - Framework financiero (50/30/20, etc)
   - Ingresos esperados
-- ENTONCES se crea como tipo "master"
-- Y solo puede existir uno por mes
+- ✅ ENTONCES se crea como tipo "master"
+- ✅ Y solo puede existir uno por mes
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: CreateBudgetForm avanzado
-- [ ] Backend: POST /api/spaces/{id}/budgets
-- [ ] Backend: validar unicidad de master budget por mes
-- [ ] DB: crear budget con budget_items automáticos según framework
+- [x] Frontend: CreateBudgetForm avanzado
+- [x] Backend: POST /api/budgets (10 endpoints total)
+- [x] Backend: validar unicidad de master budget por mes
+- [x] DB: crear budget con budget_items automáticos según framework
 
 **DoD:**
 
-- [ ] Budget creado con items predefinidos
-- [ ] Framework aplicado correctamente
-- [ ] Validación impide duplicados
+- [x] Budget creado con items predefinidos
+- [x] Framework aplicado correctamente
+- [x] Validación impide duplicados
+
+**Deliverables:**
+
+**Backend (3 archivos):**
+- apps/api/src/schemas/budget.py (Pydantic models)
+- apps/api/src/services/budget_service.py (business logic + 4 frameworks)
+- apps/api/src/api/routes/budgets.py (10 REST endpoints)
+
+**Frontend (6 archivos):**
+- wallai-web/src/types/Budget.types.ts (TypeScript types)
+- wallai-web/src/services/budget.service.ts (API client)
+- wallai-web/src/features/budgets/CreateBudgetModal.tsx (2-step modal)
+- wallai-web/src/features/budgets/BudgetList.tsx (display component)
+- wallai-web/src/features/budgets/index.ts (exports)
+- wallai-web/src/pages/Budgets.tsx (dedicated page)
+
+**Frameworks Implementados:**
+- 50/30/20 Rule (Popular) - 12 categorías
+- 60/20/20 Rule - 11 categorías
+- Zero-Based Budget - 11 categorías
+- Custom - Usuario define categorías
 
 **Story Points:** 5
 **Prioridad:** P1
 **Sprint:** 2+
 **Asignado a:** Full Stack
+**Completado:** 2025-10-10
+**Tiempo:** ~3 horas
+**Líneas de Código:** ~1,900
 
 ---
 
-### US-015: Gestión de Budget Items
+### US-015: Gestión de Budget Items (Parent-Child Categories)
 
-**Como** usuario con presupuesto, **quiero** gestionar las categorías de gasto, **para** distribuir mi dinero.
+**Como** usuario con presupuesto, **quiero** gestionar las categorías de gasto con jerarquía padre-hijo, **para** organizar mejor mi dinero.
 
-**Status:** 🔮 **FUTURO - SPRINT 2+**
+**Status:** ✅ **COMPLETADO - 2025-10-14**
 
 **Criterios de Aceptación:**
 
 - DADO que tengo un presupuesto activo
 - CUANDO añado/edito/elimino items con:
   - Nombre de categoría
-  - Monto presupuestado
+  - Monto presupuestado (hijos)
   - Ícono/color
+  - Categorías padre (con suma automática de hijos)
 - ENTONCES los cambios se reflejan inmediatamente
-- Y el total se recalcula
+- Y el total se recalcula automáticamente
 
 **Tasks Técnicas:**
 
-- [ ] Frontend: BudgetItemsList con CRUD inline
-- [ ] Backend: endpoints para budget items CRUD
-- [ ] Backend: recalcular totales al modificar
-- [ ] DB: soft delete para items eliminados
+- [x] [2025-10-14 17:30] Database: parent_id and is_parent columns
+- [x] [2025-10-14 17:30] Database: 4 triggers for auto-calculation
+- [x] [2025-10-14 17:30] Backend: CreateParentModal endpoint with children array
+- [x] [2025-10-14 17:30] Backend: Framework templates create parent categories
+- [x] [2025-10-14 17:30] Frontend: Parent-child hierarchy rendering
+- [x] [2025-10-14 17:30] Frontend: Collapse/expand functionality
+- [x] [2025-10-14 17:30] Frontend: Add child button for parents
+- [x] [2025-10-14 17:30] Frontend: Real-time calculation in useMemo
 
 **DoD:**
 
-- [ ] CRUD completo funcionando
-- [ ] Totales siempre correctos
-- [ ] Validación de montos positivos
+- [x] Parent categories show sum of children
+- [x] Children have editable values
+- [x] Parents collapse/expand with chevron
+- [x] Database triggers auto-calculate totals
+- [x] Framework templates create parents by default
 
-**Story Points:** 3
-**Prioridad:** P1
-**Sprint:** 2+
+**Story Points:** 5
+**Prioridad:** P0
+**Sprint:** 2
 **Asignado a:** Full Stack
+**Completado:** 2025-10-14
+**Tiempo:** ~4.5 horas
+**Líneas de Código:** ~450 (+ 5 migrations)
 
 ---
 

@@ -4,6 +4,7 @@
   "private": true,
   "description": "Wallai - AI-powered personal finance management platform",
   "workspaces": [
+    "wallai-web",
     "apps/*",
     "packages/*"
   ],

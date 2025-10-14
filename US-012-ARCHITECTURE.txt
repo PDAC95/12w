@@ -1,0 +1,97 @@
+═══════════════════════════════════════════════════════════════════════════
+                    ARQUITECTURA DE COMPONENTES
+═══════════════════════════════════════════════════════════════════════════
+
+SidebarMenu.tsx
+  └─► Menú de 3 puntos (...)
+      ├─► Create Space
+      ├─► Join Space ◄── TRIGGER
+      └─► View All Spaces
+
+                    │ onClick
+                    ▼
+
+JoinSpaceModal.tsx (248 líneas)
+  ├─► Header: Icono de llave + título
+  ├─► Input: Código 6 caracteres (ABCD12)
+  ├─► Validación: Tiempo real con feedback
+  ├─► Info Box: Instrucciones para obtener código
+  ├─► Error Display: Mensajes específicos
+  └─► Submit Button: Gradiente primary-secondary
+
+                    │ spaceService.joinSpace()
+                    ▼
+
+Backend FastAPI: POST /api/spaces/join
+  ├─► Valida código en DB
+  ├─► Verifica que no sea miembro
+  ├─► Verifica espacio no lleno (< 10)
+  └─► Crea membresía
+
+                    │ 201 Success
+                    ▼
+
+JoinSpaceSuccessModal.tsx (192 líneas)
+  ├─► Success Icon: Check verde + badge tipo
+  ├─► Space Card: Nombre, descripción, stats
+  ├─► Info Box: "What's next?"
+  └─► Action Buttons:
+      ├─► Go to Dashboard → navigate('/dashboard')
+      └─► View All Spaces → navigate('/spaces')
+
+═══════════════════════════════════════════════════════════════════════════
+                           FLUJO DE DATOS
+═══════════════════════════════════════════════════════════════════════════
+
+1. Click "Join Space"
+   └─► setIsJoinModalOpen(true)
+
+2. Ingresar código "ABCD12"
+   └─► handleCodeChange()
+       ├─► Convierte a mayúsculas
+       ├─► Valida formato
+       └─► Muestra feedback
+
+3. Submit
+   └─► handleSubmit()
+       ├─► spaceService.joinSpace()
+       ├─► Success: setActiveSpace() + loadSpaces()
+       └─► Error: setError()
+
+4. Success Modal
+   └─► Navigate to dashboard/spaces
+
+═══════════════════════════════════════════════════════════════════════════
+                        INTEGRACIÓN CON ZUSTAND
+═══════════════════════════════════════════════════════════════════════════
+
+useSpaceStore
+  ├─► activeSpace: Space | null
+  ├─► recentSpaces: Space[]
+  └─► setActiveSpace(space)
+      └─► Persiste en localStorage
+
+═══════════════════════════════════════════════════════════════════════════
+                         VALIDACIONES
+═══════════════════════════════════════════════════════════════════════════
+
+Frontend:
+  ✅ Longitud: 6 caracteres
+  ✅ Formato: Solo A-Z y 0-9
+  ✅ Conversión: Automática a mayúsculas
+  ✅ Botón: Deshabilitado si inválido
+
+Backend:
+  ✅ Código existe en DB
+  ✅ Usuario no es miembro
+  ✅ Espacio no lleno
+  ✅ JWT token válido
+
+═══════════════════════════════════════════════════════════════════════════
+                         MANEJO DE ERRORES
+═══════════════════════════════════════════════════════════════════════════
+
+404 → "This invite code doesn't exist..."
+400 Already Member → "You're already a member..."
+400 Space Full → "Space has reached its member limit"
+Network → "Failed to join space. Please try again."

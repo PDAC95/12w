@@ -55,13 +55,107 @@ Keep for future reference when similar issues occur
 
 ### Recently Resolved:
 
-<!-- Move resolved errors here with solution -->
+- [x] [2025-10-10 19:25] Budget types import error in budget.service.ts
+  - **File:** wallai-web/src/services/budget.service.ts:9
+  - **Error:** `Uncaught SyntaxError: The requested module '/src/types/Budget.types.ts' does not provide an export named 'Budget'`
+  - **Context:** Same pattern as AxiosInstance - TypeScript interfaces imported as values
+  - **Root Cause:** All Budget-related types (Budget, BudgetCreate, etc.) imported without type keyword
+  - **Status:** RESOLVED
+  - **Solution:** Changed from `import { Budget, ... }` to `import type { Budget, ... }`
+  - **Files Modified:** wallai-web/src/services/budget.service.ts
+  - **Prevention:** ALWAYS use `import type` for ALL TypeScript interfaces, types, and type aliases
+
+- [x] [2025-10-10 19:15] AxiosInstance import error in budget.service.ts
+  - **File:** wallai-web/src/services/budget.service.ts:6
+  - **Error:** `Uncaught SyntaxError: The requested module '/node_modules/.vite/deps/axios.js?v=ae482c30' does not provide an export named 'AxiosInstance'`
+  - **Context:** Browser console showing import error when accessing /budgets page
+  - **Root Cause:** AxiosInstance imported as named export instead of type import
+  - **Status:** RESOLVED
+  - **Solution:** Changed from `import axios, { AxiosInstance } from 'axios';` to `import axios from 'axios'; import type { AxiosInstance } from 'axios';`
+  - **Files Modified:** wallai-web/src/services/budget.service.ts
+  - **Prevention:** Always use `import type` for TypeScript type imports from libraries
+
+- [x] [2025-10-10 19:00] Budget page showing "coming soon" instead of BudgetList component
+  - **File:** wallai-web/src/App.tsx:137
+  - **Error:** Page displays placeholder text "Budgets page coming soon" instead of actual component
+  - **Context:** After implementing US-014 (Budget CRUD), the /budgets route was not updated to use the new BudgetsPage component
+  - **Root Cause:** Route was using placeholder `<div>` instead of importing and rendering `BudgetsPage` component
+  - **Attempted:**
+    1. Created BudgetsPage component at wallai-web/src/pages/Budgets.tsx
+    2. Created BudgetList and CreateBudgetModal components
+    3. Fixed icon imports (lucide-react → @heroicons/react)
+    4. Added @/services/* alias to tsconfig.app.json
+  - **Status:** RESOLVED
+  - **Solution:**
+    1. Added import in App.tsx: `import BudgetsPage from './pages/Budgets';`
+    2. Updated route: `<Route path="/budgets" element={<BudgetsPage />} />`
+    3. Fixed icon imports in CreateBudgetModal.tsx and BudgetList.tsx
+    4. Changed `TrendingUpIcon` → `ArrowTrendingUpIcon`
+    5. Changed `AlertCircleIcon` → `ExclamationCircleIcon`
+    6. Added `@/services/*` to tsconfig paths
+  - **Files Modified:**
+    - wallai-web/src/App.tsx (added import and updated route)
+    - wallai-web/src/features/budgets/CreateBudgetModal.tsx (fixed icons)
+    - wallai-web/src/features/budgets/BudgetList.tsx (fixed icons)
+    - wallai-web/tsconfig.app.json (added services alias)
+  - **Prevention:** Always update routing after creating new page components
 
 ---
 
 ## ⚠️ PROBLEMATIC PATTERNS - Wallai Specific
 
 Recurring issues and their solutions
+
+### Pattern: TypeScript Type Import Errors from npm Packages
+
+**Problem:** "does not provide an export named [TypeName]" error in browser console
+**Symptoms:**
+- Vite dev server compiles without errors
+- TypeScript checks pass
+- Error only appears in browser console
+- Import statement looks correct
+
+**Solution:**
+```typescript
+// ❌ WRONG - Named export for types
+import axios, { AxiosInstance } from 'axios';
+
+// ✅ CORRECT - Use 'import type' for TypeScript types
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+```
+
+**Why:** Some libraries only export types, not runtime values. Using `import type` tells the bundler to strip these imports at runtime.
+
+**Other Common Cases:**
+- `import type { Request, Response } from 'express';`
+- `import type { NextPage } from 'next';`
+- `import type { RouteComponentProps } from 'react-router-dom';`
+
+### Pattern: New Page Components Not Appearing (Routing Issue)
+
+**Problem:** Created new page component but route still shows placeholder or 404
+**Symptoms:**
+- Page displays "coming soon" text
+- Component works in isolation but not in app
+- No errors in console or TypeScript
+
+**Solution Checklist:**
+1. ✅ Import component in App.tsx: `import PageName from './pages/PageName';`
+2. ✅ Update route element: `<Route path="/path" element={<PageName />} />`
+3. ✅ Check component imports (use correct icon library)
+4. ✅ Verify path aliases in tsconfig.app.json
+5. ✅ Restart dev server after config changes
+
+**Example:**
+```typescript
+// ❌ WRONG - Using placeholder
+<Route path="/budgets" element={<div>Coming soon</div>} />
+
+// ✅ CORRECT - Using actual component
+import BudgetsPage from './pages/Budgets';
+<Route path="/budgets" element={<BudgetsPage />} />
+```
 
 ### Pattern: Supabase RLS Policy Blocking Queries
 
@@ -423,10 +517,15 @@ async def join_space_with_code(code: str, user_id: str) -> dict:
 
 ### Week of 2025-10-03
 
-- Total errors encountered: 0 (Project start)
+- Total errors encountered: 3
 - Critical errors: 0
-- Resolved: 0
+- Resolved: 3
 - Still active: 0
+
+#### Errors This Week:
+1. ✅ Budget page routing issue (2025-10-10) - RESOLVED
+2. ✅ AxiosInstance import error (2025-10-10) - RESOLVED
+3. ✅ Budget types import error (2025-10-10) - RESOLVED
 
 ---
 
@@ -459,7 +558,7 @@ When encountering a new error:
 
 ---
 
-**Last Updated:** 2025-10-03 16:30
-**Total Documented Errors:** 0
-**Resolution Rate:** N/A (new project)
-**Most Common Issue Category:** TBD
+**Last Updated:** 2025-10-10 19:30
+**Total Documented Errors:** 3
+**Resolution Rate:** 100% (3/3 resolved)
+**Most Common Issue Category:** Import/Configuration

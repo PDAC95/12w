@@ -20,7 +20,13 @@
       "Bash(rm:*)",
       "Bash(python -c \"import sys; print(f''Python: {sys.version}'')\")",
       "Bash(python:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm run build:*)",
+      "Bash(awk:*)",
+      "Bash(npx tsc:*)",
+      "Bash(dir:*)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []

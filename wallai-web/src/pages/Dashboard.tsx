@@ -15,9 +15,13 @@ import {
   SpendingBreakdownCard,
 } from '../features/dashboard/components';
 import { ArrowPathIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { useInitializeActiveSpace } from '../hooks/useInitializeActiveSpace';
 
 export function Dashboard() {
   const { user, token } = useAuthStore();
+
+  // Initialize active space on dashboard load
+  useInitializeActiveSpace();
 
   // Fetch dashboard data
   const {

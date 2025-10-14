@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RegisterPage, LoginPage, ForgotPasswordPage } from './features/auth';
-import { Dashboard, AuthCallback } from './pages';
+import { Dashboard, AuthCallback, BudgetDetailPage } from './pages';
 import { Chat } from './pages/Chat';
 import Spaces from './pages/Spaces';
+import BudgetsPage from './pages/Budgets';
 import { WelcomePage, SpaceSetupPage, BudgetExpressPage } from './pages/onboarding';
 import { Logo } from './components/common';
 import { PrivateRoute } from './components/routes';
@@ -134,7 +135,8 @@ function App() {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/spaces" element={<Spaces />} />
-            <Route path="/budgets" element={<div className="text-center py-12 text-gray-500">Budgets page coming soon</div>} />
+            <Route path="/budgets" element={<BudgetsPage />} />
+            <Route path="/budgets/:id" element={<BudgetDetailPage />} />
             <Route path="/expenses" element={<div className="text-center py-12 text-gray-500">Expenses page coming soon</div>} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/reports" element={<div className="text-center py-12 text-gray-500">Reports page coming soon</div>} />
